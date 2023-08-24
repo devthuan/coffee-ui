@@ -6,6 +6,7 @@ import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
 import { NavLink } from "react-router-dom";
+import Button from "../../../components/Button/Button";
 
 const cx = classNames.bind(styles);
 
@@ -38,6 +39,16 @@ const Header = () => {
             <img className={cx("avatar")} width={46} src={Avatar} alt="" />
           </li>
         </ul>
+      </div>
+
+      <div className={cx("banner")}>
+        <p className={cx("hastag")}>#Welcome To</p>
+        <h1 className={cx("title")}>THE LANGTHANG COFFEE HOUSE</h1>
+        <p className={cx("description")}>
+          không chỉ là coffee , chúng tôi bán cả sự trải nghiệm
+        </p>
+        <Button className={cx("order-btn")} text="Đặt Hàng" />
+        <a className={cx("link")} href="">xem video giới thiệu</a>
       </div>
     </header>
   );
