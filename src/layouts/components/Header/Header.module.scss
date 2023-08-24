@@ -1,0 +1,65 @@
+.wrapper {
+    width: var(--default-layout-width);
+    height: var(--height-banner);
+    // background-color: #ccc;
+    position: relative;
+    display: flex;
+
+}
+
+.backgroundImage{
+    position: absolute;
+
+    /* Đặt vị trí tương đối cho phần tử wrapper hình ảnh */
+    z-index: -1;
+}
+    
+
+
+.header {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    width: 100%;
+    height: var(--height-header);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.83) 4.69%, rgba(10, 10, 9, 0.48) 100%);
+    stroke-width: 1px;
+    stroke: #000;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+}
+
+.search {
+    position: absolute;
+    left: 81px;
+    
+}
+.active {
+    color: var(--color-active);
+}
+
+.menu {
+    position: absolute;
+    left: 188px;
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+.menu-item {
+    width: auto;
+    color: var(--text);
+    text-align: center;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -1.56px;
+    text-transform: capitalize;
+    margin-left: 64px;
+
+}
+
+.avatar {
+    border-radius: 30px;
+}
