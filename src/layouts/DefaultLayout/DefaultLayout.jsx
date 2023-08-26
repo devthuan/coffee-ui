@@ -5,6 +5,7 @@ import Header from "../components/Header/Header";
 import Space from "../components/Space/Space";
 import About from "../components/About/About";
 import MenuWater from "../components/MenuWater/MenuWater";
+import Endow from "../components/Endow/Endow";
 const cx = classNames.bind(styles);
 
 const DefaultLayout = () => {
@@ -15,6 +16,7 @@ const DefaultLayout = () => {
       <About />
       <div className={cx("container")}>
         <MenuWater />
+        <Endow />
       </div>
     </div>
   );

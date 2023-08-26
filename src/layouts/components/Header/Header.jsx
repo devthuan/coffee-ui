@@ -46,7 +46,7 @@ const Header = () => {
         <p className={cx("description")}>
           không chỉ là coffee , chúng tôi bán cả sự trải nghiệm
         </p>
-        <Button className={cx("order-btn")} text="Đặt Hàng" />
+        <button className={cx("order-btn")}>Đặt Hàng</button>
         <a className={cx("link")} href="">
           xem video giới thiệu
         </a>
