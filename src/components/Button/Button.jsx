@@ -1,4 +1,5 @@
-import styles from "./Button.module.scss";
+import React from "react";
+import styles from "./Button.module.scss"; // Import the SCSS module
 import classNames from "classnames/bind";
 import PropTypes from "prop-types";
 
@@ -12,7 +13,8 @@ const Button = ({ text, onClick, className }) => {
   );
 };
 
-Button.prototype = {
+Button.propTypes = {
+  // Corrected propTypes spelling
   text: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   className: PropTypes.string,

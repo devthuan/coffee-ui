@@ -5,7 +5,6 @@ import ImageBackground from "../../../assets/images/coffee_image-1.png";
 import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
-import { NavLink } from "react-router-dom";
 import Button from "../../../components/Button/Button";
 
 const cx = classNames.bind(styles);
@@ -48,7 +47,9 @@ const Header = () => {
           không chỉ là coffee , chúng tôi bán cả sự trải nghiệm
         </p>
         <Button className={cx("order-btn")} text="Đặt Hàng" />
-        <a className={cx("link")} href="">xem video giới thiệu</a>
+        <a className={cx("link")} href="">
+          xem video giới thiệu
+        </a>
       </div>
     </header>
   );
