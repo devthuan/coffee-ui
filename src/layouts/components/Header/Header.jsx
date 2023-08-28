@@ -5,7 +5,7 @@ import ImageBackground from "../../../assets/images/coffee_image-1.png";
 import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
-import Button from "../../../components/Button/Button";
+
 
 const cx = classNames.bind(styles);
 
@@ -25,12 +25,24 @@ const Header = () => {
         </div>
         <ul className={cx("menu")}>
           <li className={cx("menu-item")}>Trang Chủ</li>
-          <li className={cx("menu-item")}>Thực Đơn</li>
+          <li>
+            <a href="#menu" className={cx("menu-item")}>
+              Thực Đơn
+            </a>
+          </li>
           <li className={cx("menu-item")}>
             <img width={76} src={Logo} alt="" />
           </li>
-          <li className={cx("menu-item")}>Ưu đãi</li>
-          <li className={cx("menu-item")}>Về Chúng Tôi</li>
+          <li>
+            <a href="#endow" className={cx("menu-item")}>
+              Ưu đãi
+            </a>
+          </li>
+          <li>
+            <a href="#introduce" className={cx("menu-item")}>
+              Về Chúng Tôi
+            </a>
+          </li>
           <li className={cx("menu-item")}>
             <img width={35} src={Cart} alt="" />
           </li>
@@ -46,8 +58,12 @@ const Header = () => {
         <p className={cx("description")}>
           không chỉ là coffee , chúng tôi bán cả sự trải nghiệm
         </p>
-        <button className={cx("order-btn")}>Đặt Hàng</button>
-        <a className={cx("link")} href="">
+        <button className={cx("order-btn")}>
+          <a href="#menu" className={cx("order-btn")}>
+            Đặt Hàng
+          </a>
+        </button>
+        <a className={cx("link")} href="#">
           xem video giới thiệu
         </a>
       </div>

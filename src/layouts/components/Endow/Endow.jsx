@@ -4,19 +4,20 @@ import styles from "./Endow.module.scss";
 import ImageLeft from "../../../assets/images/Rectangle-132.jpg";
 import ImageRight from "../../../assets/images/Rectangle 134.jpg";
 import BackgroundEndow from "../../../assets/images/background-endow-1.png";
-
+import Title from "../../../components/Title/Title";
 const cx = classNames.bind(styles);
 
 const Space = () => {
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("inner")}>
-        <h1 className={cx("title")}>cùng với những ưu đãi</h1>
+      <div id="endow" className={cx("inner")}>
+        <Title className={cx("title")} text="cùng với những ưu đãi" />
         <div className={cx("content")}>
           <img width={400} className={cx("img")} src={ImageLeft} alt="" />
           <div className={cx("text-1")}>
             <img className={cx("text-1__img")} src={BackgroundEndow} alt="" />
             <h2 className={cx("text-1__title")}>ƯU ĐÃI #1</h2>
+
             <p className={cx("text-1__description")}>
               Sự kết hợp giữa Cappuccino và bánh bông lan nhân khô nho là một
               cách tuyệt vời để kết hợp hương vị ngọt ngào và tươi mát.

@@ -25,9 +25,13 @@
 }
 
 html {
+    scroll-behavior: smooth;
 }
 
 body {
     color: var(--color-white);
     font-family: 'Roboto', sans-serif;
+}
+a {
+    text-decoration: none;
 }

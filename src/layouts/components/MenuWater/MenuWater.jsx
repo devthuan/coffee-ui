@@ -109,7 +109,9 @@ const MenuWater = () => {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("inner")}>
-        <h1 className={cx("title")}>có gì trong thực đơn ?</h1>
+        <h1 id="menu" className={cx("title")}>
+          có gì trong thực đơn ?
+        </h1>
         <div className={cx("group__btn")}>
           <Button
             onClick={() => setActiveTabs(1)}

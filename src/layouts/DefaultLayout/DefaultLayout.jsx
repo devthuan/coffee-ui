@@ -6,6 +6,13 @@ import Space from "../components/Space/Space";
 import About from "../components/About/About";
 import MenuWater from "../components/MenuWater/MenuWater";
 import Endow from "../components/Endow/Endow";
+import MenuCake from "../components/MenuCake/MenuCake";
+import Introduce from "../components/Introduce/Introduce";
+import GetInfo from "../components/GetInfo/GetInfo";
+import Team from "../components/Team/Team";
+import Review from "../components/Review/Review";
+import Slogan from "../components/Slogan/Slogan";
+import Footer from "../components/Footer/Footer";
 const cx = classNames.bind(styles);
 
 const DefaultLayout = () => {
@@ -17,7 +24,14 @@ const DefaultLayout = () => {
       <div className={cx("container")}>
         <MenuWater />
         <Endow />
+        <MenuCake />
       </div>
+      <Introduce />
+      <GetInfo />
+      <Team />
+      <Review />
+      <Slogan />
+      <Footer />
     </div>
   );
 };
