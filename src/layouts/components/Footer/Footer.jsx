@@ -26,82 +26,84 @@ const Footer = () => {
         </div>
         <div className={cx("group__item")}>
           <table className={cx("table")}>
-            <tr className={cx("title")}>
-              <th className={cx("title__text")}>Thông tin liên hệ</th>
-              <th className={cx("title__text")}>Sản phẩm</th>
-              <th className={cx("title__text")}>Giúp đỡ</th>
-              <th className={cx("title__text")}>Khác</th>
-            </tr>
+            <tbody>
+              <tr className={cx("title")}>
+                <th className={cx("title__text")}>Thông tin liên hệ</th>
+                <th className={cx("title__text")}>Sản phẩm</th>
+                <th className={cx("title__text")}>Giúp đỡ</th>
+                <th className={cx("title__text")}>Khác</th>
+              </tr>
 
-            <tr className={cx("list")}>
-              <td className={cx("item_contact")}>
-                <p className={cx("city")}>
-                  <img
-                    className={cx("icon-map")}
-                    width={13}
-                    src={IconMap}
-                    alt=""
+              <tr className={cx("list")}>
+                <td className={cx("item_contact")}>
+                  <p className={cx("city")}>
+                    <img
+                      className={cx("icon-map")}
+                      width={13}
+                      src={IconMap}
+                      alt=""
+                    />
+                    Hồ Chí Minh
+                  </p>
+                  <p className={cx("address")}>
+                    391A Đ. Nam Kỳ Khởi Nghĩa, Phường 14, Quận 3
+                  </p>
+                  <p className={cx("city")}>
+                    <img
+                      className={cx("icon-map")}
+                      width={13}
+                      src={IconEmail}
+                      alt=""
+                    />
+                    Gmail
+                  </p>
+                  <p className={cx("email")}>Thelangthang96@gmail.com</p>
+                  <div className={cx("group__social")}>
+                    <img
+                      width={23}
+                      className={cx("social__image")}
+                      src={Instagram}
+                      alt=""
+                    />
+                    <img
+                      width={23}
+                      className={cx("social__image")}
+                      src={Facebook}
+                      alt=""
+                    />
+                    <img
+                      width={23}
+                      className={cx("social__image")}
+                      src={Github}
+                      alt=""
+                    />
+                  </div>
+                </td>
+                <td className={cx("item__product")}>
+                  <div className={cx("contact")}>
+                    <p className={cx("product")}>Cà Phê</p>
+                    <p className={cx("product")}>Sữa Tươi</p>
+                    <p className={cx("product")}>Trà Sữa</p>
+                    <p className={cx("product")}>Soda</p>
+                    <p className={cx("product")}>Bánh Ngọt</p>
+                  </div>
+                </td>
+                <td className={cx("item__product")}>
+                  <p className={cx("product")}>Tìm Kiếm</p>
+                  <p className={cx("product")}>Giới Thiệu</p>
+                  <p className={cx("product")}>Tuyển Dụng</p>
+                </td>
+                <td className={cx("item__product")}>
+                  <p className={cx("product")}>Đăng ký nhận khuyến mãi</p>
+                  <Input
+                    className={cx("input")}
+                    type="text"
+                    placeholder="nhập Email của bạn"
                   />
-                  Hồ Chí Minh
-                </p>
-                <p className={cx("address")}>
-                  391A Đ. Nam Kỳ Khởi Nghĩa, Phường 14, Quận 3
-                </p>
-                <p className={cx("city")}>
-                  <img
-                    className={cx("icon-map")}
-                    width={13}
-                    src={IconEmail}
-                    alt=""
-                  />
-                  Gmail
-                </p>
-                <p className={cx("email")}>Thelangthang96@gmail.com</p>
-                <div className={cx("group__social")}>
-                  <img
-                    width={23}
-                    className={cx("social__image")}
-                    src={Instagram}
-                    alt=""
-                  />
-                  <img
-                    width={23}
-                    className={cx("social__image")}
-                    src={Facebook}
-                    alt=""
-                  />
-                  <img
-                    width={23}
-                    className={cx("social__image")}
-                    src={Github}
-                    alt=""
-                  />
-                </div>
-              </td>
-              <td className={cx("item__product")}>
-                <div className={cx("contact")}>
-                  <p className={cx("product")}>Cà Phê</p>
-                  <p className={cx("product")}>Sữa Tươi</p>
-                  <p className={cx("product")}>Trà Sữa</p>
-                  <p className={cx("product")}>Soda</p>
-                  <p className={cx("product")}>Bánh Ngọt</p>
-                </div>
-              </td>
-              <td className={cx("item__product")}>
-                <p className={cx("product")}>Tìm Kiếm</p>
-                <p className={cx("product")}>Giới Thiệu</p>
-                <p className={cx("product")}>Tuyển Dụng</p>
-              </td>
-              <td className={cx("item__product")}>
-                <p className={cx("product")}>Đăng ký nhận khuyến mãi</p>
-                <Input
-                  className={cx("input")}
-                  type="text"
-                  placeholder="nhập Email của bạn"
-                />
-                <Button className={cx("btn")} text="Gửi" />
-              </td>
-            </tr>
+                  <Button className={cx("btn")} text="Gửi" />
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <div className={cx("copyright")}>

@@ -21,11 +21,9 @@ const DefaultLayout = () => {
       <Header />
       <Space />
       <About />
-      <div className={cx("container")}>
-        <MenuWater />
-        <Endow />
-        <MenuCake />
-      </div>
+      <MenuWater />
+      <Endow />
+      <MenuCake />
       <Introduce />
       <GetInfo />
       <Team />

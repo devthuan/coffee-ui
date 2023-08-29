@@ -3,9 +3,7 @@
     background-color: var(--color-black);
 
 }
-.inner {
 
-}
 .title {
     text-align: center;
     padding-top: 208px;
@@ -25,12 +23,19 @@
 }
 
 .active_btn {
-    background: var(--primary);
+    background-color: var(--primary);
     color: var(--color-black);
+    width: 155px;
+    height: 35px;
+    font-size: 14px;
+    margin-right: 19px;
     
 }
 
 .btn {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--color-white);
     width: 155px;
     height: 35px;
     font-size: 14px;

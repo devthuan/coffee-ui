@@ -5,11 +5,21 @@ import ImageBackground from "../../../assets/images/coffee_image-1.png";
 import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
-
+import { useState } from "react";
 
 const cx = classNames.bind(styles);
 
 const Header = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
     <header className={cx("wrapper")}>
       <img
@@ -43,11 +53,30 @@ const Header = () => {
               Về Chúng Tôi
             </a>
           </li>
-          <li className={cx("menu-item")}>
+
+          <li className={cx("menu-item", "cart")}>
             <img width={35} src={Cart} alt="" />
+            <p className={cx("amount")}>0</p>
           </li>
-          <li className={cx("menu-item")}>
+
+          <li
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={cx("menu-item", "popup")}
+          >
             <img className={cx("avatar")} width={46} src={Avatar} alt="" />
+            <div className={cx("group__prop-up", !isHovered ? "hidden" : "")}>
+              <p className={cx("name")}>Nguyễn Minh Trí</p>
+              <p className={cx("id")}>ID: #12512</p>
+              <ul className={cx("list_menu")}>
+                <li className={cx("item", "active_popup")}>Trang Chủ</li>
+                <li className={cx("item")}>Giỏ Hàng</li>
+                <li className={cx("item")}>Voucher</li>
+                <li className={cx("item")}>lịch sử</li>
+                <li className={cx("item")}>cài đặt</li>
+                <li className={cx("item")}>đăng xuất</li>
+              </ul>
+            </div>
           </li>
         </ul>
       </div>

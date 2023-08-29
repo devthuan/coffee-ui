@@ -31,7 +31,12 @@ html {
 body {
     color: var(--color-white);
     font-family: 'Roboto', sans-serif;
+    background-color: var(--color-black);
 }
 a {
     text-decoration: none;
+}
+
+ul{
+    list-style: none;
 }

@@ -115,17 +115,17 @@ const MenuWater = () => {
         <div className={cx("group__btn")}>
           <Button
             onClick={() => setActiveTabs(1)}
-            className={activeTabs === 1 ? cx("active_btn", "btn") : cx("btn")}
+            className={activeTabs === 1 ? cx("active_btn") : cx("btn")}
             text="Cà Phê"
           />
           <Button
             onClick={() => setActiveTabs(2)}
-            className={activeTabs === 2 ? cx("active_btn", "btn") : cx("btn")}
+            className={activeTabs === 2 ? cx("active_btn") : cx("btn")}
             text="Trà Sữa"
           />
           <Button
             onClick={() => setActiveTabs(3)}
-            className={activeTabs === 3 ? cx("active_btn", "btn") : cx("btn")}
+            className={activeTabs === 3 ? cx("active_btn") : cx("btn")}
             text="Soda"
           />
         </div>
@@ -138,7 +138,7 @@ const MenuWater = () => {
                     <img
                       width={61}
                       height={130}
-                      className={cx("Item__image")}
+                      className={cx("item__image")}
                       src={item.image}
                       alt=""
                     />
@@ -159,5 +159,4 @@ const MenuWater = () => {
     </div>
   );
 };
-
 export default MenuWater;
