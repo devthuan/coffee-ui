@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import classNames from "classnames/bind";
 import styles from "./MenuWater.module.scss";
 import Button from "../../../components/Button/Button";
@@ -7,11 +9,15 @@ import Soda from "../../../assets/images/soda.png";
 import SodaNho from "../../../assets/images/soda-nho.png";
 import HearIcon from "../../../assets/images/icon-hear.svg";
 
-import { useState } from "react";
+import { addItem } from "../../../redux/features/cart/cartSlice";
+import { useDispatch } from "react-redux";
+
 const cx = classNames.bind(styles);
 
 const MenuWater = () => {
   const [activeTabs, setActiveTabs] = useState(1);
+
+  const dispatch = useDispatch();
 
   const listMenu = [
     {
@@ -106,6 +112,16 @@ const MenuWater = () => {
     },
   ];
 
+  let handleClickBtn = (image, name, price) => {
+    dispatch(
+      addItem({
+        image,
+        name,
+        price,
+      })
+    );
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("inner")}>
@@ -147,6 +163,9 @@ const MenuWater = () => {
                   <p className={cx("price")}>{item.price} VND</p>
                   <img className={cx("item__icon")} src={HearIcon} alt="" />
                   <Button
+                    onClick={() =>
+                      handleClickBtn(item.image, item.name, item.price)
+                    }
                     className={cx("btn__add-cart")}
                     text="Thêm vào giỏ hàng"
                   />

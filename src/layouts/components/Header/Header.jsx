@@ -1,12 +1,13 @@
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
-import IconSearch from "../../../assets/images/icon-search.png";
 import ImageBackground from "../../../assets/images/coffee_image-1.png";
+import IconSearch from "../../../assets/images/icon-search.png";
 import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
 import { useState } from "react";
-
+import { NavLink } from "react-router-dom";
+import Menu from "./Menu";
 const cx = classNames.bind(styles);
 
 const Header = () => {
@@ -55,8 +56,10 @@ const Header = () => {
           </li>
 
           <li className={cx("menu-item", "cart")}>
-            <img width={35} src={Cart} alt="" />
-            <p className={cx("amount")}>0</p>
+            <NavLink to="/cart">
+              <img width={35} src={Cart} alt="" />
+              <p className={cx("amount")}>0</p>
+            </NavLink>
           </li>
 
           <li
