@@ -7,10 +7,12 @@ import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import Menu from "./Menu";
+import { useSelector } from "react-redux";
+
 const cx = classNames.bind(styles);
 
 const Header = () => {
+  const Items = useSelector((state) => state.cart.data);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -58,7 +60,7 @@ const Header = () => {
           <li className={cx("menu-item", "cart")}>
             <NavLink to="/cart">
               <img width={35} src={Cart} alt="" />
-              <p className={cx("amount")}>0</p>
+              <p className={cx("amount")}>{Items.length}</p>
             </NavLink>
           </li>
 

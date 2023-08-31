@@ -11,9 +11,7 @@ const CartLayout = () => {
   return (
     <div className={cx("wrapper")}>
       <Menu />
-      <div className={cx("content")}>
-        <Cart />
-      </div>
+      <Cart />
 
       <Footer />
     </div>

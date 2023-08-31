@@ -6,9 +6,11 @@ import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 const cx = classNames.bind(styles);
 
 const Menu = () => {
+  const Items = useSelector((state) => state.cart.data);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -25,7 +27,7 @@ const Menu = () => {
       <div className={cx("search")}>
         <img width={36} height={37} src={IconSearch} alt="" />
       </div>
-      <ul className={cx("menu")}>
+      <ul className={cx("menu", "menu_clone")}>
         <li className={cx("menu-item")}>
           <NavLink to="/" className={cx("menu-item")}>
             Trang Chủ
@@ -52,7 +54,7 @@ const Menu = () => {
 
         <li className={cx("menu-item", "cart")}>
           <img width={35} src={Cart} alt="" />
-          <p className={cx("amount")}>0</p>
+          <p className={cx("amount")}>{Items.length}</p>
         </li>
 
         <li

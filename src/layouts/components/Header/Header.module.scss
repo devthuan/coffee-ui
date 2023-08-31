@@ -96,8 +96,8 @@
         z-index: -1;
         right: -50px;
         top: 0;
-        width: 170px;
-        height: 320px;
+        width: 120px;
+        height: 85px;
     
     }
 }
@@ -244,4 +244,10 @@
 .menu__cart {
     width: var(--default-layout-width);
     height: 70px;
+}
+
+.menu_clone {
+    position: absolute;
+    left: 130px;
+  
 }

@@ -21,100 +21,116 @@ const MenuWater = () => {
 
   const listMenu = [
     {
+      id: 1,
       name: "Cà Phê Đen",
-      price: "25.000",
+      price: 25000,
       image: CoffeeBlack,
       classify: 1,
     },
     {
+      id: 2,
       name: "Cà Phê Sữa",
-      price: "25.000",
+      price: 25000,
       image: CoffeeBlack,
       classify: 1,
     },
     {
+      id: 3,
       name: "Cà Phê Thường",
-      price: "25.000",
+      price: 25000,
       image: CoffeeBlack,
       classify: 1,
     },
     {
+      id: 4,
       name: "Cà Phê Phô Mai",
-      price: "25.000",
+      price: 25000,
       image: CoffeeBlack,
       classify: 1,
     },
     {
+      id: 5,
       name: "Milo",
-      price: "25.000",
+      price: 25000,
       image: CoffeeBlack,
       classify: 1,
     },
     {
+      id: 6,
       name: "Trà sữa đường đen",
-      price: "25.000",
+      price: 25000,
       image: MilkTea,
       classify: 2,
     },
     {
+      id: 7,
       name: "Trà sữa đường đen",
-      price: "25.000",
+      price: 25000,
       image: MilkTea,
       classify: 2,
     },
     {
+      id: 8,
       name: "Trà sữa đường đen",
-      price: "25.000",
+      price: 25000,
       image: MilkTea,
       classify: 2,
     },
     {
+      id: 9,
       name: "Trà sữa đường đen",
-      price: "25.000",
+      price: 25000,
       image: MilkTea,
       classify: 2,
     },
     {
+      id: 10,
       name: "Trà sữa đường đen",
-      price: "25.000",
+      price: 25000,
       image: MilkTea,
       classify: 2,
     },
     {
+      id: 11,
       name: "Soda Đào",
-      price: "30.000",
+      price: 30000,
       image: Soda,
       classify: 3,
     },
     {
+      id: 12,
       name: "Soda Đào",
-      price: "30.000",
+      price: 30000,
       image: Soda,
       classify: 3,
     },
     {
+      id: 13,
       name: "Soda Đào",
-      price: "30.000",
+      price: 30000,
       image: Soda,
       classify: 3,
     },
     {
+      id: 14,
       name: "Soda Nho",
-      price: "30.000",
+      price: 30000,
       image: SodaNho,
       classify: 3,
     },
     {
+      id: 15,
       name: "Soda Nho",
-      price: "30.000",
+      price: 30000,
       image: SodaNho,
       classify: 3,
     },
   ];
 
-  let handleClickBtn = (image, name, price) => {
+  let handleClickBtn = (id, image, name, price) => {
     dispatch(
       addItem({
+        id,
         image,
         name,
         price,
@@ -160,11 +176,13 @@ const MenuWater = () => {
                     />
                   </div>
                   <p className={cx("name")}>{item.name}</p>
-                  <p className={cx("price")}>{item.price} VND</p>
+                  <p className={cx("price")}>
+                    {item.price.toLocaleString()} VND
+                  </p>
                   <img className={cx("item__icon")} src={HearIcon} alt="" />
                   <Button
                     onClick={() =>
-                      handleClickBtn(item.image, item.name, item.price)
+                      handleClickBtn(item.id, item.image, item.name, item.price)
                     }
                     className={cx("btn__add-cart")}
                     text="Thêm vào giỏ hàng"

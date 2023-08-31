@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Image from "../../../assets/images/coffee-black.svg";
 
 const initialState = {
-  data: [{ image: "image", name: "Cà phê đen", price: 25000 }],
+  data: [
+    { id: 16, image: Image, name: "Cà phê đen", price: 25000 },
+    { id: 17, image: Image, name: "Cà phê đen", price: 25000 },
+    { id: 18, image: Image, name: "Cà phê đen", price: 25000 },
+    { id: 19, image: Image, name: "Cà phê đen", price: 25000 },
+  ],
   loading: false,
   error: null,
 };
@@ -18,7 +24,7 @@ export const cartSlice = createSlice({
       state.data.push(action.payload);
     },
     removeItem: (state, action) => {
-      state.data -= 1;
+      state.data = state.data.filter((item) => item.id !== action.payload);
     },
     incrementByAmount: (state, action) => {
       state.data += action.payload;

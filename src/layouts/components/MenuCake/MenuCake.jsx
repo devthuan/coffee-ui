@@ -3,55 +3,79 @@ import styles from "./MenuCake.module.scss";
 import Cake1 from "../../../assets/images/cake-1.png";
 import HearIcon from "../../../assets/images/icon-hear.svg";
 import Button from "../../../components/Button/Button";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../../redux/features/cart/cartSlice";
+
 const cx = classNames.bind(styles);
 
 const MenuCake = () => {
+  const dispatch = useDispatch();
+
+  let handleClickBtn = (id, image, name, price) => {
+    dispatch(
+      addItem({
+        id,
+        image,
+        name,
+        price,
+      })
+    );
+  };
+
   const listMenu = [
     {
+      id: 20,
       name: "Bánh Cuộn Nho Khô",
-      price: "30.000",
+      price: 30000,
       image: Cake1,
       classify: 1,
     },
     {
+      id: 21,
       name: "Bánh Cuộn Nho Khô",
-      price: "30.000",
+      price: 30000,
       image: Cake1,
       classify: 1,
     },
     {
+      id: 22,
       name: "Bánh Cuộn Nho Khô",
-      price: "30.000",
+      price: 30000,
       image: Cake1,
       classify: 1,
     },
     {
+      id: 23,
       name: "Bánh Cuộn Nho Khô",
-      price: "30.000",
+      price: 30000,
       image: Cake1,
       classify: 1,
     },
     {
+      id: 24,
       name: "Bánh Cuộn Nho Khô",
-      price: "30.000",
+      price: 30000,
       image: Cake1,
       classify: 1,
     },
     {
+      id: 25,
       name: "Bánh Cuộn Nho Khô",
-      price: "30.000",
+      price: 30000,
       image: Cake1,
       classify: 1,
     },
     {
+      id: 26,
       name: "Bánh Cuộn Nho Khô",
-      price: "30.000",
+      price: 30000,
       image: Cake1,
       classify: 1,
     },
     {
+      id: 27,
       name: "Bánh Cuộn Nho Khô",
-      price: "30.000",
+      price: 30000,
       image: Cake1,
       classify: 1,
     },
@@ -78,9 +102,12 @@ const MenuCake = () => {
                   />
                 </div>
                 <p className={cx("name")}>{item.name}</p>
-                <p className={cx("price")}>{item.price} VND</p>
+                <p className={cx("price")}>{item.price.toLocaleString()} VND</p>
                 <img className={cx("item__icon")} src={HearIcon} alt="" />
                 <Button
+                  onClick={() =>
+                    handleClickBtn(item.id, item.image, item.name, item.price)
+                  }
                   className={cx("btn__add-cart")}
                   text="Thêm vào giỏ hàng"
                 />
