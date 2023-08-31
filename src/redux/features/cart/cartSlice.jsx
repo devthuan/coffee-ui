@@ -3,10 +3,10 @@ import Image from "../../../assets/images/coffee-black.svg";
 
 const initialState = {
   data: [
-    { id: 16, image: Image, name: "Cà phê đen", price: 25000 },
-    { id: 17, image: Image, name: "Cà phê đen", price: 25000 },
-    { id: 18, image: Image, name: "Cà phê đen", price: 25000 },
-    { id: 19, image: Image, name: "Cà phê đen", price: 25000 },
+    { id: 16, image: Image, name: "Cà phê đen", price: 25000, quantity: 1 },
+    { id: 17, image: Image, name: "Cà phê đen", price: 25000, quantity: 1 },
+    { id: 18, image: Image, name: "Cà phê đen", price: 25000, quantity: 1 },
+    { id: 19, image: Image, name: "Cà phê đen", price: 25000, quantity: 1 },
   ],
   loading: false,
   error: null,
@@ -17,22 +17,58 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.data.push(action.payload);
+      let existingItem = state.data.find(
+        (item) => item.id === action.payload.id
+      );
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.data.push({ ...action.payload, quantity: 1 });
+      }
     },
     removeItem: (state, action) => {
       state.data = state.data.filter((item) => item.id !== action.payload);
     },
-    incrementByAmount: (state, action) => {
-      state.data += action.payload;
+    increasingQuantity: (state, action) => {
+      let itemUpdate = state.data.find(
+        (item) => item.id === action.payload.itemId
+      );
+      if (itemUpdate) {
+        itemUpdate.quantity += 1;
+      }
+    },
+    reduceQuantity: (state, action) => {
+      let itemUpdate = state.data.find(
+        (item) => item.id === action.payload.itemId
+      );
+      if (itemUpdate) {
+        itemUpdate.quantity -= 1;
+        if (itemUpdate.quantity < 1) {
+          itemUpdate.quantity = 1;
+        }
+      }
+    },
+    updateQuantity: (state, action) => {
+      let itemUpdate = state.data.find(
+        (item) => item.id === action.payload.itemId
+      );
+      if (itemUpdate) {
+        itemUpdate.quantity = action.payload.newQuantity;
+        if (itemUpdate.quantity < 1) {
+          itemUpdate.quantity = 1;
+        }
+      }
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addItem, removeItem, incrementByAmount } = cartSlice.actions;
+export const {
+  addItem,
+  removeItem,
+  increasingQuantity,
+  reduceQuantity,
+  updateQuantity,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

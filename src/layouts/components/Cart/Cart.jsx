@@ -2,7 +2,12 @@ import classNames from "classnames/bind";
 import styles from "./Cart.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import { removeItem } from "../../../redux/features/cart/cartSlice";
+import {
+  removeItem,
+  increasingQuantity,
+  reduceQuantity,
+  updateQuantity,
+} from "../../../redux/features/cart/cartSlice";
 
 import Title from "../../../components/Title/Title";
 import Button from "../../../components/Button/Button";
@@ -13,22 +18,21 @@ const cx = classNames.bind(styles);
 const Cart = () => {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.data);
-  const [itemQuantities, setItemQuantities] = useState({});
-
-  // console.log(items);
+  const [newQuantity, setNewQuantity] = useState();
 
   let handlePlus = (itemId) => {
-    setItemQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [itemId]: (prevQuantities[itemId] || 1) + 1,
-    }));
-    console.log(itemQuantities);
+    dispatch(
+      increasingQuantity({
+        itemId,
+      })
+    );
   };
   let handleMinus = (itemId) => {
-    setItemQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [itemId]: Math.max((prevQuantities[itemId] || 1) - 1, 0),
-    }));
+    dispatch(
+      reduceQuantity({
+        itemId,
+      })
+    );
   };
 
   let handleDelete = (itemId) => {
@@ -36,19 +40,21 @@ const Cart = () => {
   };
 
   let handleQuantityChange = (e, itemId) => {
-    let newQuantity = parseInt(e.target.value);
-    setItemQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [itemId]: newQuantity,
-    }));
+    setNewQuantity(parseInt(e.target.value));
+    dispatch(
+      updateQuantity({
+        itemId,
+        newQuantity: parseInt(e.target.value),
+      })
+    );
   };
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
     let totalPayment = 0;
-    for (const item of items) {
-      const quantity = itemQuantities[item.id] || 1;
-      const itemTotal = item.price * quantity;
+    for (let item of items) {
+      let amount = item.quantity || 1;
+      let itemTotal = item.price * amount;
       totalPrice += itemTotal;
     }
     totalPayment = totalPrice + 15000;
@@ -101,7 +107,11 @@ const Cart = () => {
                       <input
                         className={cx("input__amount")}
                         type="text"
-                        value={itemQuantities[item.id] || 1}
+                        value={
+                          newQuantity !== undefined
+                            ? item.newQuantity
+                            : item.quantity
+                        }
                         onChange={(e) => handleQuantityChange(e, item.id)}
                       />
 
@@ -116,7 +126,7 @@ const Cart = () => {
                   <td className={cx("table__item")}>
                     <p className={cx("total")}>
                       {(
-                        item.price * itemQuantities[item.id] || item.price * 1
+                        item.price * item.quantity || item.price * 1
                       ).toLocaleString()}
                     </p>
                   </td>
