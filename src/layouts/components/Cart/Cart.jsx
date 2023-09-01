@@ -70,32 +70,39 @@ const Cart = () => {
   };
 
   let handleOrderBtn = () => {
-    const nameProduct = [];
-    let totalQuantity = 0;
-    let idTemp = 0;
-    for (let product of listItemCart) {
-      nameProduct.push({
-        id: idTemp++,
-        nameOrder: product.name,
-        price: product.price,
-        imageOrder: product.image,
-        quantityOrder: product.quantity,
+    if (fullName && numberPhone && address) {
+      const nameProduct = [];
+      let totalQuantity = 0;
+      let idTemp = 0;
+      for (let product of listItemCart) {
+        nameProduct.push({
+          id: idTemp++,
+          nameOrder: product.name,
+          price: product.price,
+          imageOrder: product.image,
+          quantityOrder: product.quantity,
+        });
+        totalQuantity += product.quantity;
+      }
+      const orderData = {
+        id: idTemp,
+        name: nameProduct,
+        fullName: fullName,
+        numberPhone: numberPhone,
+        address: address,
+        totalPayment: totalPayment,
+      };
+      dispatch(addItemOrder(orderData));
+
+      toast.success("Đơn hàng của bạn đã được xác nhận");
+
+      dispatch(removeAll());
+    } else {
+      toast.warning("Vui lòng nhập đầy đủ thông tin giao hàng", {
+        theme: "dark",
+        autoClose: 2000,
       });
-      totalQuantity += product.quantity;
     }
-    const orderData = {
-      id: idTemp,
-      name: nameProduct,
-      fullName: fullName,
-      numberPhone: numberPhone,
-      address: address,
-      totalPayment: totalPayment,
-    };
-    dispatch(addItemOrder(orderData));
-
-    toast.success("Đơn hàng của bạn đã được xác nhận");
-
-    dispatch(removeAll());
   };
 
   const { totalPrice, totalPayment } = calculateTotalPrice();
