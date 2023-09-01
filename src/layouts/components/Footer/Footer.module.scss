@@ -1,9 +1,10 @@
 .wrapper{
     width: var(--default-layout-width);
-
+    height: 100%;
     background-color: var(--color-black);
 }
 .inner{
+    height: auto;
     padding-left: 93px;
     
 }

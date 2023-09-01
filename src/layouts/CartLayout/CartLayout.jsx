@@ -2,15 +2,16 @@ import classNames from "classnames/bind";
 import styles from "./CartLayout.module.scss";
 
 import Menu from "../components/Header/Menu";
-import Cart from "../components/Cart/Cart";
 import Footer from "../components/Footer/Footer";
 const cx = classNames.bind(styles);
 
-const CartLayout = () => {
+const CartLayout = ({ children }) => {
   return (
     <div className={cx("wrapper")}>
       <Menu />
-      <Cart />
+      <div className={cx("container")}>
+        <div className={cx("content")}> {children}</div>
+      </div>
 
       <Footer />
     </div>

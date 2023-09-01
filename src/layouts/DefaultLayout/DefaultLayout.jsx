@@ -13,6 +13,9 @@ import Team from "../components/Team/Team";
 import Review from "../components/Review/Review";
 import Slogan from "../components/Slogan/Slogan";
 import Footer from "../components/Footer/Footer";
+
+
+
 const cx = classNames.bind(styles);
 
 const DefaultLayout = () => {

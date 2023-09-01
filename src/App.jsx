@@ -1,17 +1,32 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout";
-import CartLayout from "./layouts/CartLayout/CartLayout";
-import OrderLayout from "./layouts/OrderLayout/OrderLayout";
+import { publicRoutes } from "./routes/routes";
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<DefaultLayout />} />
-          <Route path="/cart" element={<CartLayout />} />
-          <Route path="/order" element={<OrderLayout />} />
+          {publicRoutes.map((route, index) => {
+            const Page = route.component;
+            let Layout = DefaultLayout;
+
+            if (route.layout) {
+              Layout = route.layout;
+            }
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
         </Routes>
       </div>
     </Router>

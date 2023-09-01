@@ -5,11 +5,13 @@ import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 const cx = classNames.bind(styles);
 
 const Menu = () => {
+  const location = useLocation();
   const Items = useSelector((state) => state.cart.data);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -22,12 +24,11 @@ const Menu = () => {
   };
 
   return (
-    // <header className={cx("wrapper")}>
-    <div className={cx("header", "menu__cart")}>
+    <div className={cx("header")}>
       <div className={cx("search")}>
         <img width={36} height={37} src={IconSearch} alt="" />
       </div>
-      <ul className={cx("menu", "menu_clone")}>
+      <ul className={cx("menu")}>
         <li className={cx("menu-item")}>
           <NavLink to="/" className={cx("menu-item")}>
             Trang Chủ
@@ -39,9 +40,9 @@ const Menu = () => {
           </a>
         </li>
 
-        <li className={cx("menu-item")}>
+        <NavLink to="/" className={cx("menu-item")}>
           <img width={76} src={Logo} alt="" />
-        </li>
+        </NavLink>
 
         <li>
           <a href="#endow" className={cx("menu-item")}>
@@ -65,14 +66,31 @@ const Menu = () => {
           className={cx("menu-item", "popup")}
         >
           <img className={cx("avatar")} width={46} src={Avatar} alt="" />
+
           <div className={cx("group__prop-up", !isHovered ? "hidden" : "")}>
             <p className={cx("name")}>Nguyễn Minh Trí</p>
             <p className={cx("id")}>ID: #12512</p>
             <ul className={cx("list_menu")}>
-              <li className={cx("item", "active_popup")}>Trang Chủ</li>
-              <NavLink to="/order">
-                <li className={cx("item")}>Đơn hàng</li>
-              </NavLink>
+              <li>
+                <NavLink
+                  to="/"
+                  className={cx("item", {
+                    active_popup: location.pathname === "/",
+                  })}
+                >
+                  Trang Chủ
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/order"
+                  className={cx("item", {
+                    active_popup: location.pathname === "/order",
+                  })}
+                >
+                  Đơn hàng
+                </NavLink>
+              </li>
               <li className={cx("item")}>Voucher</li>
               <li className={cx("item")}>lịch sử</li>
               <li className={cx("item")}>cài đặt</li>
@@ -82,7 +100,6 @@ const Menu = () => {
         </li>
       </ul>
     </div>
-    // </header>
   );
 };
 

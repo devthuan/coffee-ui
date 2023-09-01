@@ -5,9 +5,12 @@
     margin: 0 auto;
     width: var(--default-layout-width);        
 }
-
+.container {
+    width: 100%;
+    height: auto;
+}
 .content {
     width: var(--default-layout-width);        
-    height: 300px;
+    height: auto;
     padding-top: var(--height-header);
 }
