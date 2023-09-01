@@ -2,12 +2,16 @@ import classNames from "classnames/bind";
 import styles from "./Cart.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+
 import {
   removeItem,
+  removeAll,
   increasingQuantity,
   reduceQuantity,
   updateQuantity,
 } from "../../../redux/features/cart/cartSlice";
+import { addItemOrder } from "../../../redux/features/order/orderSlice";
 
 import Title from "../../../components/Title/Title";
 import Button from "../../../components/Button/Button";
@@ -17,8 +21,11 @@ const cx = classNames.bind(styles);
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.cart.data);
+  const listItemCart = useSelector((state) => state.cart.data);
   const [newQuantity, setNewQuantity] = useState();
+  const [fullName, setFullName] = useState();
+  const [numberPhone, setNumberPhone] = useState();
+  const [address, setAddress] = useState();
 
   let handlePlus = (itemId) => {
     dispatch(
@@ -27,6 +34,7 @@ const Cart = () => {
       })
     );
   };
+
   let handleMinus = (itemId) => {
     dispatch(
       reduceQuantity({
@@ -52,13 +60,42 @@ const Cart = () => {
   const calculateTotalPrice = () => {
     let totalPrice = 0;
     let totalPayment = 0;
-    for (let item of items) {
+    for (let item of listItemCart) {
       let amount = item.quantity || 1;
       let itemTotal = item.price * amount;
       totalPrice += itemTotal;
     }
     totalPayment = totalPrice + 15000;
     return { totalPrice, totalPayment };
+  };
+
+  let handleOrderBtn = () => {
+    const nameProduct = [];
+    let totalQuantity = 0;
+    let idTemp = 0;
+    for (let product of listItemCart) {
+      nameProduct.push({
+        id: idTemp++,
+        nameOrder: product.name,
+        price: product.price,
+        imageOrder: product.image,
+        quantityOrder: product.quantity,
+      });
+      totalQuantity += product.quantity;
+    }
+    const orderData = {
+      id: idTemp,
+      name: nameProduct,
+      fullName: fullName,
+      numberPhone: numberPhone,
+      address: address,
+      totalPayment: totalPayment,
+    };
+    dispatch(addItemOrder(orderData));
+
+    toast.success("Đơn hàng của bạn đã được xác nhận");
+
+    dispatch(removeAll());
   };
 
   const { totalPrice, totalPayment } = calculateTotalPrice();
@@ -76,9 +113,9 @@ const Cart = () => {
               <th className={cx("table__title-item")}>Số tiền</th>
               <th className={cx("table__title-item")}>Thao tác</th>
             </tr>
-            {items.map((item, index) => {
+            {listItemCart.map((item, index) => {
               return (
-                <tr key={index} className={cx("table__items")}>
+                <tr key={index} className={cx("table__listItemCart")}>
                   <td className={cx("table__item")}>
                     <div className={cx("image__name-product")}>
                       <img
@@ -92,7 +129,7 @@ const Cart = () => {
                   </td>
                   <td className={cx("table__item")}>
                     <p className={cx("price__product")}>
-                      {item.price.toLocaleString()}
+                      {item.price ? item.price.toLocaleString() : "N/A"}
                     </p>
                   </td>
                   <td className={cx("table__item")}>
@@ -104,7 +141,7 @@ const Cart = () => {
                         -
                       </h1>
 
-                      <input
+                      <Input
                         className={cx("input__amount")}
                         type="text"
                         value={
@@ -154,6 +191,7 @@ const Cart = () => {
                   Họ và Tên
                 </label>
                 <Input
+                  onChange={(e) => setFullName(e.target.value)}
                   className={cx("fullName")}
                   type="text"
                   placeholder="Họ và tên"
@@ -165,6 +203,7 @@ const Cart = () => {
                   Số điện thoại
                 </label>
                 <Input
+                  onChange={(e) => setNumberPhone(e.target.value)}
                   readOnly
                   className={cx("NumPhone")}
                   type="text"
@@ -178,6 +217,7 @@ const Cart = () => {
                 Địa chỉ giao hàng
               </label>
               <Input
+                onChange={(e) => setAddress(e.target.value)}
                 className={cx("address")}
                 type="text"
                 placeholder="Địa chỉ giao hàng"
@@ -203,10 +243,26 @@ const Cart = () => {
                 </p>
               </li>
             </ul>
-            <Button className={cx("order__btn")} text="Đặt Hàng" />
+            <Button
+              onClick={() => handleOrderBtn()}
+              className={cx("order__btn")}
+              text="Đặt Hàng"
+            />
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={1200}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 };

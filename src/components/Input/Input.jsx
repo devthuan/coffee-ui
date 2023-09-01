@@ -5,24 +5,23 @@ import PropTypes from "prop-types";
 
 const cx = classNames.bind(styles);
 
-const Input = ({ type, placeholder, value, onClick, className }) => {
+const Input = ({ type, placeholder, value, onChange, className }) => {
   return (
     <input
       className={cx("input", className)}
       type={type}
       value={value}
-      onChange={onClick}
+      onChange={onChange}
       placeholder={placeholder}
     />
   );
 };
 
 Input.propTypes = {
-  // Corrected propTypes spelling
   type: PropTypes.string,
   value: PropTypes.number,
   placeholder: PropTypes.string,
-  onchange: PropTypes.func,
+  onChange: PropTypes.func, // Corrected spelling to onChange
   className: PropTypes.string,
 };
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 import classNames from "classnames/bind";
 import styles from "./MenuWater.module.scss";
@@ -136,6 +137,7 @@ const MenuWater = () => {
         price,
       })
     );
+    toast.success("Thêm sản phẩm thành công");
   };
 
   return (
@@ -193,6 +195,18 @@ const MenuWater = () => {
           })}
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

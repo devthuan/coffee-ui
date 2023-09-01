@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "./MenuCake.module.scss";
+import { ToastContainer, toast } from "react-toastify";
 import Cake1 from "../../../assets/images/cake-1.png";
 import HearIcon from "../../../assets/images/icon-hear.svg";
 import Button from "../../../components/Button/Button";
@@ -20,6 +21,7 @@ const MenuCake = () => {
         price,
       })
     );
+    toast.success("Thêm sản phẩm thành công");
   };
 
   const listMenu = [
@@ -116,6 +118,18 @@ const MenuCake = () => {
           })}
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

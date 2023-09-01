@@ -38,9 +38,11 @@ const Menu = () => {
             Thực Đơn
           </a>
         </li>
+
         <li className={cx("menu-item")}>
           <img width={76} src={Logo} alt="" />
         </li>
+
         <li>
           <a href="#endow" className={cx("menu-item")}>
             Ưu đãi
@@ -51,12 +53,12 @@ const Menu = () => {
             Về Chúng Tôi
           </a>
         </li>
-
-        <li className={cx("menu-item", "cart")}>
-          <img width={35} src={Cart} alt="" />
-          <p className={cx("amount")}>{Items.length}</p>
-        </li>
-
+        <NavLink to="/cart">
+          <li className={cx("menu-item", "cart")}>
+            <img width={35} src={Cart} alt="" />
+            <p className={cx("amount")}>{Items.length || 0} </p>
+          </li>
+        </NavLink>
         <li
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -68,7 +70,9 @@ const Menu = () => {
             <p className={cx("id")}>ID: #12512</p>
             <ul className={cx("list_menu")}>
               <li className={cx("item", "active_popup")}>Trang Chủ</li>
-              <li className={cx("item")}>Giỏ Hàng</li>
+              <NavLink to="/order">
+                <li className={cx("item")}>Đơn hàng</li>
+              </NavLink>
               <li className={cx("item")}>Voucher</li>
               <li className={cx("item")}>lịch sử</li>
               <li className={cx("item")}>cài đặt</li>
