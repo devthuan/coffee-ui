@@ -1,15 +1,15 @@
 .wrapper {
-   height: auto;
     width: var(--default-layout-width);        
+    margin: auto;
 }
 .container {
     width: 100%;
-    height: auto;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .content {
-    height: auto;
-    padding-top: var(--height-header);
+    width: var(--default-layout-width);
+    // padding-top: var(--height-header);
 }

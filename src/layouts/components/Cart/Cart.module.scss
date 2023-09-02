@@ -1,5 +1,6 @@
 .wrapper{
     width: var(--default-layout-width);
+    max-width: var(--default-layout-width);
     display: flex;
     justify-content: center;
     background-color: var(--color-black);

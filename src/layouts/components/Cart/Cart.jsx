@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import styles from "./Cart.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 import {
@@ -26,7 +26,6 @@ const Cart = () => {
   const [fullName, setFullName] = useState();
   const [numberPhone, setNumberPhone] = useState();
   const [address, setAddress] = useState();
-
   let handlePlus = (itemId) => {
     dispatch(
       increasingQuantity({
@@ -106,6 +105,12 @@ const Cart = () => {
   };
 
   const { totalPrice, totalPayment } = calculateTotalPrice();
+
+  useEffect(() => {
+    const storedPhone = localStorage.getItem("phone");
+    const parsedPhone = JSON.parse(storedPhone);
+    setNumberPhone(parsedPhone);
+  }, []);
 
   return (
     <div className={cx("wrapper")}>
@@ -215,6 +220,7 @@ const Cart = () => {
                       readOnly
                       className={cx("NumPhone")}
                       type="text"
+                      value={numberPhone}
                       placeholder="Số điện thoại"
                     />
                   </div>

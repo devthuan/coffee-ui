@@ -17,8 +17,13 @@ import Cart from "../layouts/components/Cart/Cart";
 import Order from "../layouts/components/Order/Order";
 import Login from "../layouts/components/Form/Login";
 import Register from "../layouts/components/Form/Register";
+
+import Dashboard from "../AdminComponents/Dashboard/Dashboard";
+import User from "../AdminComponents/User/User";
+
 import CartLayout from "../layouts/CartLayout/CartLayout";
 import LoginLayout from "../layouts/LoginLayout/LoginLayout";
+import ManagerLayout from "../layouts/ManagerLayout/ManagerLayout";
 
 const publicRoutes = [
   { path: config.routes.home, component: Header },
@@ -38,6 +43,9 @@ const publicRoutes = [
   { path: config.routes.order, component: Order, layout: CartLayout },
   { path: config.routes.login, component: Login, layout: LoginLayout },
   { path: config.routes.register, component: Register, layout: LoginLayout },
+
+  { path: config.routes.dashboard, component: Dashboard, layout: ManagerLayout },
+  { path: config.routes.userManagement, component: User, layout: ManagerLayout },
 ];
 
 const privateRoutes = [];

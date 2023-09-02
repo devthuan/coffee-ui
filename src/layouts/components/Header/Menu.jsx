@@ -5,7 +5,7 @@ import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
 import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
@@ -13,15 +13,21 @@ const cx = classNames.bind(styles);
 
 const Menu = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const Items = useSelector((state) => state.cart.data);
   const [isHovered, setIsHovered] = useState(false);
-
+  const checkLogin = localStorage.getItem("phone");
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+  };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("phone");
+    navigate("/");
   };
 
   return (
@@ -66,44 +72,51 @@ const Menu = () => {
           onMouseLeave={handleMouseLeave}
           className={cx("menu-item", "popup")}
         >
-          <NavLink to="/login" className={cx("login__link")}>
-            <FontAwesomeIcon 
-              className={cx("icon__login")}
-              icon={faRightToBracket}
-            />
-          </NavLink>
-          {/* <img className={cx("avatar")} width={46} src={Avatar} alt="" /> */}
-          {/* 
-          <div className={cx("group__prop-up", !isHovered ? "hidden" : "")}>
-            <p className={cx("name")}>Nguyễn Minh Trí</p>
-            <p className={cx("id")}>ID: #12512</p>
-            <ul className={cx("list_menu")}>
-              <li>
-                <NavLink
-                  to="/"
-                  className={cx("item", {
-                    active_popup: location.pathname === "/",
-                  })}
-                >
-                  Trang Chủ
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/order"
-                  className={cx("item", {
-                    active_popup: location.pathname === "/order",
-                  })}
-                >
-                  Đơn hàng
-                </NavLink>
-              </li>
-              <li className={cx("item")}>Voucher</li>
-              <li className={cx("item")}>lịch sử</li>
-              <li className={cx("item")}>cài đặt</li>
-              <li className={cx("item")}>đăng xuất</li>
-            </ul>
-          </div> */}
+          {checkLogin ? (
+            <>
+              <img className={cx("avatar")} width={46} src={Avatar} alt="" />
+
+              <div className={cx("group__prop-up", !isHovered ? "hidden" : "")}>
+                <p className={cx("name")}>Nguyễn Minh Trí</p>
+                <p className={cx("id")}>ID: #12512</p>
+                <ul className={cx("list_menu")}>
+                  <li>
+                    <NavLink
+                      to="/"
+                      className={cx("item", {
+                        active_popup: location.pathname === "/",
+                      })}
+                    >
+                      Trang Chủ
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/order"
+                      className={cx("item", {
+                        active_popup: location.pathname === "/order",
+                      })}
+                    >
+                      Đơn hàng
+                    </NavLink>
+                  </li>
+                  <li className={cx("item")}>Voucher</li>
+                  <li className={cx("item")}>lịch sử</li>
+                  <li className={cx("item")}>cài đặt</li>
+                  <li onClick={handleLogOut} className={cx("item")}>
+                    đăng xuất
+                  </li>
+                </ul>
+              </div>
+            </>
+          ) : (
+            <NavLink to="/login" className={cx("login__link")}>
+              <FontAwesomeIcon
+                className={cx("icon__login")}
+                icon={faRightToBracket}
+              />
+            </NavLink>
+          )}
         </li>
       </ul>
     </div>
