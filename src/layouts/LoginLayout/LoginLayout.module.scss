@@ -1,0 +1,15 @@
+.wrapper {
+   height: auto;
+    width: var(--default-layout-width);        
+}
+.container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content {
+    height: auto;
+    padding-top: var(--height-header);
+}

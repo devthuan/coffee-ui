@@ -235,6 +235,18 @@
     margin-left: 28px;
     opacity: 0.79;
 }
+.login__link {
+    color: var(--color-text);
+}
+.icon__login {
+    font-size: 35px;
+    margin-left: 10px;
+
+    &:hover{
+        color: var(--primary);
+        transition: 0.9s all;
+    }
+}
 
 
 

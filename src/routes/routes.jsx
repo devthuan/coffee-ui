@@ -15,8 +15,10 @@ import Footer from "../layouts/components/Footer/Footer";
 
 import Cart from "../layouts/components/Cart/Cart";
 import Order from "../layouts/components/Order/Order";
-
+import Login from "../layouts/components/Form/Login";
+import Register from "../layouts/components/Form/Register";
 import CartLayout from "../layouts/CartLayout/CartLayout";
+import LoginLayout from "../layouts/LoginLayout/LoginLayout";
 
 const publicRoutes = [
   { path: config.routes.home, component: Header },
@@ -34,6 +36,8 @@ const publicRoutes = [
 
   { path: config.routes.cart, component: Cart, layout: CartLayout },
   { path: config.routes.order, component: Order, layout: CartLayout },
+  { path: config.routes.login, component: Login, layout: LoginLayout },
+  { path: config.routes.register, component: Register, layout: LoginLayout },
 ];
 
 const privateRoutes = [];

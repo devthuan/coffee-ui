@@ -7,7 +7,8 @@ import Avatar from "../../../assets/images/avatar-crycle.jpg";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 const cx = classNames.bind(styles);
 
 const Menu = () => {
@@ -65,8 +66,14 @@ const Menu = () => {
           onMouseLeave={handleMouseLeave}
           className={cx("menu-item", "popup")}
         >
-          <img className={cx("avatar")} width={46} src={Avatar} alt="" />
-
+          <NavLink to="/login" className={cx("login__link")}>
+            <FontAwesomeIcon 
+              className={cx("icon__login")}
+              icon={faRightToBracket}
+            />
+          </NavLink>
+          {/* <img className={cx("avatar")} width={46} src={Avatar} alt="" /> */}
+          {/* 
           <div className={cx("group__prop-up", !isHovered ? "hidden" : "")}>
             <p className={cx("name")}>Nguyễn Minh Trí</p>
             <p className={cx("id")}>ID: #12512</p>
@@ -96,7 +103,7 @@ const Menu = () => {
               <li className={cx("item")}>cài đặt</li>
               <li className={cx("item")}>đăng xuất</li>
             </ul>
-          </div>
+          </div> */}
         </li>
       </ul>
     </div>
