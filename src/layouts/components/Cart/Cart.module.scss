@@ -5,6 +5,7 @@
     justify-content: center;
     background-color: var(--color-black);
 }
+
 .inner{
     min-height: 300px;
     margin: 70px 0;
@@ -44,8 +45,7 @@
 .table__items:nth-child(even){
     background-color: var(--background-color-image-item);
 }
-.table__item{
-}
+
 
 .image__name-product {
     display: flex;
@@ -125,7 +125,6 @@
 .checkOut{
     border: 1px solid var(--text);
     border-radius: 11px;
-    // width: var(--default-layout-width);
     width: auto;
     margin-top: 20px;
     padding: 30px 0;
@@ -218,7 +217,7 @@
     height: 58px;
     border: none;
     background: var(--primary);
-    color: #000;
+    color: var(--color-black);
     text-align: center;
     font-family: Roboto;
     font-size: 24px;

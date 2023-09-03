@@ -24,6 +24,9 @@ import User from "../AdminComponents/User/User";
 import CartLayout from "../layouts/CartLayout/CartLayout";
 import LoginLayout from "../layouts/LoginLayout/LoginLayout";
 import ManagerLayout from "../layouts/ManagerLayout/ManagerLayout";
+import OrderStatistics from "../AdminComponents/OrderStatistics/OrderStatistics";
+import OrderManagement from "../AdminComponents/OrderManagement/OrderManagement";
+
 
 const publicRoutes = [
   { path: config.routes.home, component: Header },
@@ -44,8 +47,26 @@ const publicRoutes = [
   { path: config.routes.login, component: Login, layout: LoginLayout },
   { path: config.routes.register, component: Register, layout: LoginLayout },
 
-  { path: config.routes.dashboard, component: Dashboard, layout: ManagerLayout },
-  { path: config.routes.userManagement, component: User, layout: ManagerLayout },
+  {
+    path: config.routes.dashboard,
+    component: Dashboard,
+    layout: ManagerLayout,
+  },
+  {
+    path: config.routes.userManagement,
+    component: User,
+    layout: ManagerLayout,
+  },
+  {
+    path: config.routes.orderStatistics,
+    component: OrderStatistics,
+    layout: ManagerLayout,
+  },
+  {
+    path: config.routes.orderManagement,
+    component: OrderManagement,
+    layout: ManagerLayout,
+  },
 ];
 
 const privateRoutes = [];

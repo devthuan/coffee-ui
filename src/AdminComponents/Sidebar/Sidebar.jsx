@@ -15,10 +15,15 @@ const Sidebar = () => {
   const location = useLocation();
   const listMenuManagement = [
     { route: "/dashboard", name: "Dashboard", icon: faGauge },
+    {
+      route: "/order-statistics",
+      name: "Statistics Order",
+      icon: faCartShopping,
+    },
     { route: "/user-management", name: "User Management", icon: faPeopleRoof },
     {
       route: "/order-management",
-      name: "Order Management",
+      name: "Bill Management",
       icon: faCartShopping,
     },
   ];
@@ -50,7 +55,7 @@ const Sidebar = () => {
               })}
 
             <li className={cx("item")}>
-              <a className={cx("link", "logout")} href="">
+              <a className={cx("link", "logout")} href="/">
                 <FontAwesomeIcon
                   className={cx("icon")}
                   icon={faRightFromBracket}
