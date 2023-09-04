@@ -17,7 +17,7 @@ const OrderManagement = () => {
       product: "Trần Phước Thuận",
       totalPayment: "100,000",
       address: "Hướng phùng, hướng hoá, quảng trị",
-      action: "Đang xử lý",
+      action: "Thất bại",
       createdDate: "03/09/2023",
     },
     {
@@ -33,7 +33,7 @@ const OrderManagement = () => {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("inner")}>
-        <Title className={cx("title")} text="order statistics" />
+        <Title className={cx("title")} text="Thống kê đơn hàng" />
         <div className={cxDashboard("box__statistical")}>
           <div className={cxDashboard("box__item")}>
             <div className={cxDashboard("box__icon")}>
@@ -43,7 +43,7 @@ const OrderManagement = () => {
               />
             </div>
             <div className={cxDashboard("box__text")}>
-              <Title className={cxDashboard("title")} text="order successful" />
+              <Title className={cxDashboard("title")} text="Đơn hàng thành công" />
               <p className={cxDashboard("number")}>12</p>
             </div>
           </div>
@@ -55,7 +55,7 @@ const OrderManagement = () => {
               />
             </div>
             <div className={cxDashboard("box__text")}>
-              <Title className={cxDashboard("title")} text="order pending" />
+              <Title className={cxDashboard("title")} text="Đơn hàng đang chờ" />
               <p className={cxDashboard("number")}>12</p>
             </div>
           </div>
@@ -67,7 +67,7 @@ const OrderManagement = () => {
               />
             </div>
             <div className={cxDashboard("box__text")}>
-              <Title className={cxDashboard("title")} text="order failed" />
+              <Title className={cxDashboard("title")} text="Đơn hàng bị huỷ" />
               <p className={cxDashboard("number")}>12</p>
             </div>
           </div>
@@ -97,7 +97,12 @@ const OrderManagement = () => {
                       <td className={cx("item")}>{user.address}</td>
                       <td className={cx("item")}>
                         <Button
-                          className={cx("btn", "action")}
+                          className={cx(
+                            "btn",
+                            user.action === "Thành công"
+                              ? "successful"
+                              : "failed"
+                          )}
                           text={user.action}
                         />
                       </td>

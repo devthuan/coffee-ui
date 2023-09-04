@@ -57,9 +57,12 @@ const Menu = () => {
           </a>
         </li>
         <li>
-          <a href="#introduce" className={cx("menu-item")}>
+          <NavLink to="/dashboard" className={cx("menu-item")}>
             Về Chúng Tôi
-          </a>
+          </NavLink>
+          {/* <a href="#introduce" className={cx("menu-item")}>
+            Về Chúng Tôi
+          </a> */}
         </li>
         <NavLink to="/cart">
           <li className={cx("menu-item", "cart")}>

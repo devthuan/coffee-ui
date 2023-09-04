@@ -74,14 +74,19 @@
 
 }
 
-.action{
-
-    // &:hover {
-    //     background-color: var(--color-red);
-    //     color: var(--color-white);
-    //     transition: 0.5s all;
-    // }
+.successful {
+    color: var(--color-white);
+    background-color: var(--color-green);
 }
+.pending {
+    color: var(--color-white);
+        background-color: var(--color-origin);
+}
+.failed {
+    color: var(--color-white);
+        background-color: var(--color-red);
+}
+
 .update{
     margin-right: 10px;
 }

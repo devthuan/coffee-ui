@@ -14,16 +14,16 @@ const cx = classNames.bind(styles);
 const Sidebar = () => {
   const location = useLocation();
   const listMenuManagement = [
-    { route: "/dashboard", name: "Dashboard", icon: faGauge },
+    { route: "/dashboard", name: "Bảng điều kiển", icon: faGauge },
     {
       route: "/order-statistics",
-      name: "Statistics Order",
+      name: "Thống kê đơn hàng",
       icon: faCartShopping,
     },
-    { route: "/user-management", name: "User Management", icon: faPeopleRoof },
+    { route: "/user-management", name: "Quản lý thành viên", icon: faPeopleRoof },
     {
       route: "/order-management",
-      name: "Bill Management",
+      name: "Quản lý đơn hàng",
       icon: faCartShopping,
     },
   ];
@@ -60,7 +60,7 @@ const Sidebar = () => {
                   className={cx("icon")}
                   icon={faRightFromBracket}
                 />
-                Log Out
+                Đăng xuất
               </a>
             </li>
           </ul>

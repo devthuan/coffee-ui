@@ -26,6 +26,7 @@ const Cart = () => {
   const [fullName, setFullName] = useState();
   const [numberPhone, setNumberPhone] = useState();
   const [address, setAddress] = useState();
+
   let handlePlus = (itemId) => {
     dispatch(
       increasingQuantity({
@@ -56,18 +57,6 @@ const Cart = () => {
     );
   };
 
-  const calculateTotalPrice = () => {
-    let totalPrice = 0;
-    let totalPayment = 0;
-    for (let item of listItemCart) {
-      let amount = item.quantity || 1;
-      let itemTotal = item.price * amount;
-      totalPrice += itemTotal;
-    }
-    totalPayment = totalPrice + 15000;
-    return { totalPrice, totalPayment };
-  };
-
   let handleOrderBtn = () => {
     if (fullName && numberPhone && address) {
       const nameProduct = [];
@@ -76,20 +65,37 @@ const Cart = () => {
       for (let product of listItemCart) {
         nameProduct.push({
           id: idTemp++,
-          nameOrder: product.name,
+          nameProduct: product.name,
           price: product.price,
-          imageOrder: product.image,
-          quantityOrder: product.quantity,
+          imageProduct: product.image,
+          quantity: product.quantity,
         });
         totalQuantity += product.quantity;
       }
+
+      // Lấy thời gian hiện tại
+      const currentTime = new Date();
+
+      // Lấy giờ hiện tại (HH:MM:SS)
+      const currentHour = currentTime.getHours();
+      const currentMinutes = currentTime.getMinutes();
+
+      // Tạo chuỗi giờ
+      const currentHourString = currentHour.toString().padStart(2, "0");
+      const currentMinutesString = currentMinutes.toString().padStart(2, "0");
+
+      const currentTimeString = `${currentHourString}:${currentMinutesString}`;
+
       const orderData = {
         id: idTemp,
-        name: nameProduct,
-        fullName: fullName,
+        product: nameProduct,
+        nameUser: fullName,
         numberPhone: numberPhone,
         address: address,
         totalPayment: totalPayment,
+        timeOrder: currentTimeString,
+        paymentMethods: "Thanh toán khi nhận hàng",
+        status: "Chờ",
       };
       dispatch(addItemOrder(orderData));
 
@@ -102,6 +108,18 @@ const Cart = () => {
         autoClose: 2000,
       });
     }
+  };
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    let totalPayment = 0;
+    for (let item of listItemCart) {
+      let amount = item.quantity || 1;
+      let itemTotal = item.price * amount;
+      totalPrice += itemTotal;
+    }
+    totalPayment = totalPrice + 15000;
+    return { totalPrice, totalPayment };
   };
 
   const { totalPrice, totalPayment } = calculateTotalPrice();

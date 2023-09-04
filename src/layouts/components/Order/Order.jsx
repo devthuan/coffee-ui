@@ -2,7 +2,6 @@ import classNames from "classnames/bind";
 import stylesOrder from "./Order.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { removeItemOrder } from "../../../redux/features/order/orderSlice";
-
 import Title from "../../../components/Title/Title";
 import Button from "../../../components/Button/Button";
 

@@ -186,7 +186,7 @@
     &:hover {
         color: var(--color-white);
         background-color: var(--color-green);
-        transition: 0.7s all;
+        transition: 0.5s all;
     }
 }
 .cancel{
@@ -194,7 +194,7 @@
     &:hover {
         color: var(--color-white);
         background-color:var(--color-red) ;
-        transition: 0.7s all;
+        transition: 0.5s all;
     }
 
 }

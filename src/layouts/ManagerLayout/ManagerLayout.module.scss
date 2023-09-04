@@ -11,14 +11,17 @@
 .container {
     width: 100%;
     display: flex;
+
 }
 
 .box__sidebar {
+    position: fixed;
     width: 270;
 }
+
 .content {
+    margin-left: 250px;
     width: 100%;
     min-width: 1010px;
     padding: 0 50px;
-    margin: 0 auto;
 }
