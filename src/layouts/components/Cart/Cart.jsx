@@ -1,18 +1,22 @@
 import classNames from "classnames/bind";
 import styles from "./Cart.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ToastContainer, toast } from "react-toastify";
-
 import {
+  addItem,
   removeItem,
   removeAll,
   increasingQuantity,
   reduceQuantity,
   updateQuantity,
 } from "../../../redux/features/cart/cartSlice";
-import { addItemOrder } from "../../../redux/features/order/orderSlice";
-
+import {
+  GetCartAPI,
+  AddOrderAPI,
+  AddOrderDetailAPI,
+  DeleteCartAPI,
+} from "../../../services/UseServices";
 import Title from "../../../components/Title/Title";
 import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
@@ -22,84 +26,69 @@ const cx = classNames.bind(styles);
 const Cart = () => {
   const dispatch = useDispatch();
   const listItemCart = useSelector((state) => state.cart.data);
+  const memoizedCartData = useMemo(() => listItemCart, [listItemCart]);
   const [newQuantity, setNewQuantity] = useState();
   const [fullName, setFullName] = useState();
   const [numberPhone, setNumberPhone] = useState();
   const [address, setAddress] = useState();
 
-  let handlePlus = (itemId) => {
-    dispatch(
-      increasingQuantity({
-        itemId,
-      })
-    );
+  let handlePlus = (cart_id) => {
+    dispatch(increasingQuantity({ cart_id }));
   };
 
-  let handleMinus = (itemId) => {
-    dispatch(
-      reduceQuantity({
-        itemId,
-      })
-    );
+  let handleMinus = (cart_id) => {
+    dispatch(reduceQuantity({ cart_id }));
   };
 
-  let handleDelete = (itemId) => {
-    dispatch(removeItem(itemId));
+  let handleDelete = (cart_id) => {
+    dispatch(removeItem(cart_id));
   };
 
-  let handleQuantityChange = (e, itemId) => {
+  let handleQuantityChange = (e, cart_id) => {
     setNewQuantity(parseInt(e.target.value));
     dispatch(
       updateQuantity({
-        itemId,
+        cart_id,
         newQuantity: parseInt(e.target.value),
       })
     );
   };
 
-  let handleOrderBtn = () => {
+  let handleOrderBtn = async () => {
     if (fullName && numberPhone && address) {
-      const nameProduct = [];
-      let totalQuantity = 0;
-      let idTemp = 0;
+      const listProductInCart = [];
       for (let product of listItemCart) {
-        nameProduct.push({
-          id: idTemp++,
-          nameProduct: product.name,
-          price: product.price,
-          imageProduct: product.image,
+        listProductInCart.push({
+          product_id: product.product_id,
           quantity: product.quantity,
         });
-        totalQuantity += product.quantity;
       }
 
-      // Lấy thời gian hiện tại
-      const currentTime = new Date();
+      let payment_method = "Thanh toán khi nhận hàng";
+      let order_status = "Processing";
 
-      // Lấy giờ hiện tại (HH:MM:SS)
-      const currentHour = currentTime.getHours();
-      const currentMinutes = currentTime.getMinutes();
+      const res = await AddOrderAPI(
+        fullName,
+        numberPhone,
+        address,
+        payment_method,
+        order_status
+      );
 
-      // Tạo chuỗi giờ
-      const currentHourString = currentHour.toString().padStart(2, "0");
-      const currentMinutesString = currentMinutes.toString().padStart(2, "0");
+      if (res && res.status === 200) {
+        let order_id = res.data.order_id;
+        const resOrderDetail = await AddOrderDetailAPI(
+          order_id,
+          listProductInCart
+        );
 
-      const currentTimeString = `${currentHourString}:${currentMinutesString}`;
-
-      const orderData = {
-        id: idTemp,
-        product: nameProduct,
-        nameUser: fullName,
-        numberPhone: numberPhone,
-        address: address,
-        totalPayment: totalPayment,
-        timeOrder: currentTimeString,
-        paymentMethods: "Thanh toán khi nhận hàng",
-        status: "Chờ",
-      };
-      dispatch(addItemOrder(orderData));
-
-      toast.success("Đơn hàng của bạn đã được xác nhận");
+        if (resOrderDetail && resOrderDetail.status === 200) {
+          const resDeleteCart = await DeleteCartAPI();
+          if (resDeleteCart && resDeleteCart.status === 200) {
+            toast.success("Đơn hàng của bạn đã được xác nhận");
+          }
+        }
+      }
 
       dispatch(removeAll());
     } else {
@@ -125,10 +114,34 @@ const Cart = () => {
   const { totalPrice, totalPayment } = calculateTotalPrice();
 
   useEffect(() => {
-    const storedPhone = localStorage.getItem("phone");
+    const storedPhone = localStorage.getItem("username");
     const parsedPhone = JSON.parse(storedPhone);
-    setNumberPhone(parsedPhone);
-  }, []);
+    setFullName(parsedPhone);
+
+    const fetchAPI = async () => {
+      const res = await GetCartAPI();
+
+      if (res && res.status === 200 && res.data) {
+        const data = res.data.data;
+        data.forEach((item) => {
+          dispatch(
+            addItem({
+              id: item.cart_id,
+              product_id: item.product_id,
+              image_product: item.image_product,
+              name_product: item.name_product,
+              price: item.price,
+              quantity: item.quantity,
+            })
+          );
+        });
+      }
+    };
+
+    if (!memoizedCartData.length) {
+      fetchAPI();
+    }
+  }, [dispatch, memoizedCartData]);
 
   return (
     <div className={cx("wrapper")}>
@@ -153,15 +166,19 @@ const Cart = () => {
                           <img
                             height={65}
                             className={cx("img_product")}
-                            src={item.image}
+                            src={item.image_product}
                             alt=""
                           />
-                          <p className={cx("name__product")}>{item.name}</p>
+                          <p className={cx("name__product")}>
+                            {item.name_product}
+                          </p>
                         </div>
                       </td>
                       <td className={cx("table__item")}>
                         <p className={cx("price__product")}>
-                          {item.price ? item.price.toLocaleString() : "N/A"}
+                          {item.price
+                            ? parseInt(item.price).toLocaleString()
+                            : "N/A"}
                         </p>
                       </td>
                       <td className={cx("table__item")}>

@@ -7,26 +7,37 @@ import {
   faCartShopping,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const listMenuManagement = [
     { route: "/dashboard", name: "Bảng điều kiển", icon: faGauge },
     {
-      route: "/order-statistics",
+      route: "/statistics-order",
       name: "Thống kê đơn hàng",
       icon: faCartShopping,
     },
-    { route: "/user-management", name: "Quản lý thành viên", icon: faPeopleRoof },
     {
-      route: "/order-management",
-      name: "Quản lý đơn hàng",
+      route: "/user-management",
+      name: "Quản lý thành viên",
+      icon: faPeopleRoof,
+    },
+    {
+      route: "/management-order",
+      name: "Quản lý giỏ hàng",
       icon: faCartShopping,
     },
   ];
+
+  const handleClickLogout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   return (
     <div className={cx("wrapper")}>
@@ -54,7 +65,7 @@ const Sidebar = () => {
                 );
               })}
 
-            <li className={cx("item")}>
+            <li onClick={() => handleClickLogout()} className={cx("item")}>
               <a className={cx("link", "logout")} href="/">
                 <FontAwesomeIcon
                   className={cx("icon")}

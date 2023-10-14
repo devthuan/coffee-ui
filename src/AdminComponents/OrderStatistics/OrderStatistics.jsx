@@ -3,32 +3,56 @@ import styles from "./OrderStatistics.module.scss";
 import styleDashboard from "../Dashboard/Dashboard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faSpinner, faXmark } from "@fortawesome/free-solid-svg-icons";
-
+import { format, isValid } from "date-fns";
 import Title from "../../components/Title/Title";
 import Button from "../../components/Button/Button";
-
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useMemo } from "react";
+import { GetOrdersAPI, GetOrdersDetailAPI } from "../../services/UseServices";
+import { addOrderStatistic } from "../../redux/features/order/orderStatisticSlice";
 const cx = classNames.bind(styles);
 const cxDashboard = classNames.bind(styleDashboard);
 
-const OrderManagement = () => {
-  const listUser = [
-    {
-      id: 1,
-      product: "Trần Phước Thuận",
-      totalPayment: "100,000",
-      address: "Hướng phùng, hướng hoá, quảng trị",
-      action: "Thất bại",
-      createdDate: "03/09/2023",
-    },
-    {
-      id: 2,
-      product: "Trần Phước Thuận",
-      totalPayment: "0945986661",
-      address: "Hướng phùng, hướng hoá, quảng trị",
-      action: "Thành công",
-      createdDate: "03/09/2023",
-    },
-  ];
+const OrderStatistics = () => {
+  const dispatch = useDispatch();
+  const dataOrder = useSelector((state) => state.orderStatistic.data);
+  const memoizedOrderData = useMemo(() => dataOrder, [dataOrder]);
+  useEffect(() => {
+    const fetchAPI = async () => {
+      try {
+        const res = await GetOrdersAPI();
+        if (res && res.status === 200 && res.data) {
+          const data = res.data.data;
+          data.forEach(async (item) => {
+            const order_id = item.id;
+            const orderDetail = await GetOrdersDetailAPI(order_id);
+            const itemOrderDetail = orderDetail.data.data;
+            if (orderDetail && orderDetail.data) {
+              dispatch(
+                addOrderStatistic({
+                  id: item.id,
+                  product: itemOrderDetail,
+                  full_name: item.full_name,
+                  phone_number: item.phone_number,
+                  delivery_address: item.delivery_address,
+                  total_payment: item.total_payment,
+                  order_date: item.order_date,
+                  payment_methods: item.payment_methods,
+                  order_status: item.order_status,
+                })
+              );
+            }
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (!memoizedOrderData.length) {
+      fetchAPI();
+    }
+  }, [dispatch, memoizedOrderData]);
 
   return (
     <div className={cx("wrapper")}>
@@ -43,7 +67,10 @@ const OrderManagement = () => {
               />
             </div>
             <div className={cxDashboard("box__text")}>
-              <Title className={cxDashboard("title")} text="Đơn hàng thành công" />
+              <Title
+                className={cxDashboard("title")}
+                text="Đơn hàng thành công"
+              />
               <p className={cxDashboard("number")}>12</p>
             </div>
           </div>
@@ -55,7 +82,10 @@ const OrderManagement = () => {
               />
             </div>
             <div className={cxDashboard("box__text")}>
-              <Title className={cxDashboard("title")} text="Đơn hàng đang chờ" />
+              <Title
+                className={cxDashboard("title")}
+                text="Đơn hàng đang chờ"
+              />
               <p className={cxDashboard("number")}>12</p>
             </div>
           </div>
@@ -74,39 +104,98 @@ const OrderManagement = () => {
         </div>
 
         <div className={cx("box__table")}>
-          {listUser && listUser.length > 0 ? (
+          {dataOrder && dataOrder.length > 0 ? (
             <table className={cx("table")}>
               <tbody>
                 <tr className={cx("group__title")}>
-                  <th className={cx("title__text")}>STT</th>
-                  <th className={cx("title__text")}>
-                    Tên sản phẩm và số lượng
-                  </th>
+                  <th className={cx("title__text")}>id</th>
+                  <th className={cx("title__text")}>sản phẩm</th>
                   <th className={cx("title__text")}>Số tiền</th>
                   <th className={cx("title__text")}>thông tin người nhận</th>
                   <th className={cx("title__text")}>trạng thái</th>
 
                   <th className={cx("title__text")}>Ngày tạo</th>
                 </tr>
-                {listUser.map((user, index) => {
+                {dataOrder.map((item, index) => {
                   return (
-                    <tr className={cx("group__row")}>
-                      <td className={cx("item")}>{user.id}</td>
-                      <td className={cx("item")}>{user.product}</td>
-                      <td className={cx("item")}>{user.totalPayment}</td>
-                      <td className={cx("item")}>{user.address}</td>
+                    <tr key={index} className={cx("group__row")}>
+                      <td className={cx("item")}>{item.id}</td>
+                      <td className={cx("item")}>
+                        <div className={cx("image__name-product")}>
+                          <div className={cx("box__infoProduct")}>
+                            <div className={cx("box__detail")}>
+                              <p className={cx("name__product")}>
+                                {item.product_name}
+                              </p>
+                              <div className={cx("amount")}>
+                                <p className={cx("quantity__product")}>
+                                  {item.quantity}
+                                </p>
+                              </div>
+                            </div>
+                            <p className={cx("price__product")}>{item.price}</p>
+                          </div>
+                        </div>
+                        {item.product.map((product, indexOrder) => {
+                          return (
+                            <div
+                              key={indexOrder}
+                              className={cx("image__name-product")}
+                            >
+                              <img
+                                height={65}
+                                className={cx("img_product")}
+                                src={product.image_product}
+                                alt=""
+                              />
+                              <div className={cx("box__infoProduct")}>
+                                <div className={cx("box__detail")}>
+                                  <p className={cx("name__product")}>
+                                    {product.name_product}
+                                  </p>
+                                  <div className={cx("amount")}>
+                                    <p className={cx("quantity__product")}>
+                                      X {product.quantity}
+                                    </p>
+                                  </div>
+                                </div>
+                                <p className={cx("price__product")}>
+                                  {parseFloat(product.price).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </td>
+                      <td className={cx("item")}>
+                        {parseFloat(item.total_payment).toLocaleString()}
+                      </td>
+                      <td className={cx("item")}>
+                        <div className={cx("box__address")}>
+                          <p>{item.full_name},</p>
+                          <p>{item.phone_number},</p>
+                          <p>{item.delivery_address}</p>
+                        </div>
+                      </td>
                       <td className={cx("item")}>
                         <Button
                           className={cx(
                             "btn",
-                            user.action === "Thành công"
+                            item.order_status === "Successful"
                               ? "successful"
                               : "failed"
                           )}
-                          text={user.action}
+                          text={item.order_status}
                         />
                       </td>
-                      <td className={cx("item")}>{user.createdDate}</td>
+                      <td className={cx("item")}>
+                        {isValid(new Date(item.order_date))
+                          ? format(
+                              new Date(item.order_date),
+                              "hh:mm, dd/MM/yyyy"
+                            )
+                          : ""}
+                      </td>
                     </tr>
                   );
                 })}
@@ -124,4 +213,4 @@ const OrderManagement = () => {
   );
 };
 
-export default OrderManagement;
+export default OrderStatistics;

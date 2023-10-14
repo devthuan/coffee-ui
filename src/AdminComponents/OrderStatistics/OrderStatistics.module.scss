@@ -90,4 +90,63 @@
 .update{
     margin-right: 10px;
 }
+.box__infoProduct {
+    margin-left: 20px;
+       
+}
 
+.box__address {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:  flex-start;
+   
+}
+
+.image__name-product {
+    position: relative;
+    display: flex;
+    justify-content:  flex-start;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.img_product {
+    margin: 20px 0;
+}
+.quantity__product {
+    min-width: 70px;
+
+}
+
+.name__product,
+.price__product,
+.total,
+.amount {
+    height: auto;
+    color: #FFF;
+    text-align: center;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.32px;
+    opacity: 0.83;
+
+}
+
+
+
+.price__product {
+    margin: 30px 0 0 0;
+    min-width: 40px;
+    text-align:  flex-start;
+
+}
+
+.quantity__product {
+    position: absolute;
+    right: 5px;
+    margin: 5px 0;
+
+}

@@ -4,19 +4,22 @@ import IconSearch from "../../../assets/images/icon-search.png";
 import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { GetCartAPI } from "../../../services/UseServices";
+import { addTotalData } from "../../../redux/features/cart/cartSlice";
 const cx = classNames.bind(styles);
 
 const Menu = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const Items = useSelector((state) => state.cart.data);
+  const cartData = useSelector((state) => state.cart.totalData);
   const [isHovered, setIsHovered] = useState(false);
-  const checkLogin = localStorage.getItem("phone");
+  const checkLogin = localStorage.getItem("token");
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
@@ -26,9 +29,33 @@ const Menu = () => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("phone");
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
     navigate("/");
   };
+
+  // Sử dụng useMemo để lưu trạng thái dữ liệu đã được tải
+  const memoizedCartData = useMemo(() => cartData, [cartData]);
+
+  useEffect(() => {
+    const fetchAPI = async () => {
+      try {
+        const res = await GetCartAPI();
+
+        if (res && res.status === 200 && res.data) {
+          const data = res.data.totalCart;
+          dispatch(addTotalData(data));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // Kiểm tra xem dữ liệu đã được tải chưa trước khi gọi API
+    if (memoizedCartData === 0) {
+      fetchAPI();
+    }
+  }, [dispatch, memoizedCartData]);
 
   return (
     <div className={cx("header")}>
@@ -67,7 +94,7 @@ const Menu = () => {
         <NavLink to="/cart">
           <li className={cx("menu-item", "cart")}>
             <img width={35} src={Cart} alt="" />
-            <p className={cx("amount")}>{Items.length || 0} </p>
+            <p className={cx("amount")}>{cartData ? cartData : 0} </p>
           </li>
         </NavLink>
         <li

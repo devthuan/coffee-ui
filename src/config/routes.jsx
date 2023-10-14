@@ -6,8 +6,8 @@ const routes = {
   register: "/register",
   dashboard: "/dashboard",
   userManagement: "/user-management",
-  orderStatistics: "/order-statistics",
-  orderManagement: "/order-management",
+  orderStatistics: "/statistics-order",
+  orderManagement: "/management-order",
 };
 
 export default routes;

@@ -29,9 +29,9 @@ const Header = () => {
             Đặt Hàng
           </a>
         </button>
-        <a className={cx("link")} href="#">
+        <p className={cx("link")}>
           xem video giới thiệu
-        </a>
+        </p>
       </div>
     </header>
   );
