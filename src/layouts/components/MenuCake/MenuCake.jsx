@@ -4,84 +4,78 @@ import { ToastContainer, toast } from "react-toastify";
 import Cake1 from "../../../assets/images/cake-1.png";
 import HearIcon from "../../../assets/images/icon-hear.svg";
 import Button from "../../../components/Button/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../../redux/features/cart/cartSlice";
+import { useEffect, useMemo } from "react";
+import { addProduct } from "../../../redux/features/product/productSlice";
+import { GetProductAPI, AddCartAPI } from "../../../services/UseServices";
 
 const cx = classNames.bind(styles);
 
 const MenuCake = () => {
   const dispatch = useDispatch();
+  const dataProducts = useSelector((state) => state.product.dataCake);
+  const memoizedProductData = useMemo(() => dataProducts, [dataProducts]);
+  let handleClickBtn = async (
+    product_id,
+    image_product,
+    name_product,
+    price
+  ) => {
+    try {
+      let quantity = 1;
+      const res = await AddCartAPI(product_id, quantity);
 
-  let handleClickBtn = (id, image, name, price) => {
-    dispatch(
-      addItem({
-        id,
-        image,
-        name,
-        price,
-      })
-    );
-    toast.success("Thêm sản phẩm thành công");
+      if (res && res.status === 200) {
+        toast.success("Thêm sản phẩm thành công");
+        dispatch(
+          addItem({
+            product_id,
+            name_product,
+            image_product,
+            price,
+            quantity,
+          })
+        );
+      } else {
+        toast.error("Có lỗi xảy ra!!!");
+      }
+    } catch (error) {
+      toast.warning("Bạn cần đăng nhập trước khi đặt hàng");
+      return;
+    }
   };
 
-  const listMenu = [
-    {
-      id: 20,
-      name: "Bánh Cuộn Nho Khô",
-      price: 30000,
-      image: Cake1,
-      classify: 1,
-    },
-    {
-      id: 21,
-      name: "Bánh Cuộn Nho Khô",
-      price: 30000,
-      image: Cake1,
-      classify: 1,
-    },
-    {
-      id: 22,
-      name: "Bánh Cuộn Nho Khô",
-      price: 30000,
-      image: Cake1,
-      classify: 1,
-    },
-    {
-      id: 23,
-      name: "Bánh Cuộn Nho Khô",
-      price: 30000,
-      image: Cake1,
-      classify: 1,
-    },
-    {
-      id: 24,
-      name: "Bánh Cuộn Nho Khô",
-      price: 30000,
-      image: Cake1,
-      classify: 1,
-    },
-    {
-      id: 25,
-      name: "Bánh Cuộn Nho Khô",
-      price: 30000,
-      image: Cake1,
-      classify: 1,
-    },
-    {
-      id: 26,
-      name: "Bánh Cuộn Nho Khô",
-      price: 30000,
-      image: Cake1,
-      classify: 1,
-    },
-    {
-      id: 27,
-      name: "Bánh Cuộn Nho Khô",
-      price: 30000,
-      image: Cake1,
-      classify: 1,
-    },
-  ];
+  useEffect(() => {
+    const fetchAPI = async () => {
+      try {
+        const res = await GetProductAPI(1);
+
+        if (res && res.status === 200 && res.data) {
+          const data = res.data.data;
+          data.forEach((item) =>
+            dispatch(
+              addProduct({
+                id: item.id,
+                name_product: item.name_product,
+                price: item.price,
+                image_product: item.image_product,
+                category: item.category,
+                is_active: item.is_active,
+              })
+            )
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // check if data is available before calling api
+    if (!memoizedProductData.length) {
+      fetchAPI();
+    }
+  }, [dispatch, memoizedProductData]);
 
   return (
     <div className={cx("wrapper")}>
@@ -91,31 +85,42 @@ const MenuCake = () => {
         </h1>
 
         <div className={cx("group__card")}>
-          {listMenu.map((item, index) => {
-            return (
-              <div key={index} className={cx("item")}>
-                <div className={cx("background__image")}>
-                  <img
-                    width={189}
-                    height={138}
-                    className={cx("Item__image")}
-                    src={item.image}
-                    alt=""
-                  />
-                </div>
-                <p className={cx("name")}>{item.name}</p>
-                <p className={cx("price")}>{item.price.toLocaleString()} VND</p>
-                <img className={cx("item__icon")} src={HearIcon} alt="" />
-                <Button
-                  onClick={() =>
-                    handleClickBtn(item.id, item.image, item.name, item.price)
-                  }
-                  className={cx("btn__add-cart")}
-                  text="Thêm vào giỏ hàng"
-                />
-              </div>
-            );
-          })}
+          {dataProducts &&
+            dataProducts.map((item, index) => {
+              if (item.category === "cake") {
+                return (
+                  <div key={index} className={cx("item")}>
+                    <div className={cx("background__image")}>
+                      <img
+                        width={189}
+                        height={138}
+                        className={cx("Item__image")}
+                        src={item.image_product}
+                        alt=""
+                      />
+                    </div>
+                    <p className={cx("name")}>{item.name_product}</p>
+                    <p className={cx("price")}>
+                      {parseInt(item.price).toLocaleString()} VND
+                    </p>
+                    <img className={cx("item__icon")} src={HearIcon} alt="" />
+                    <Button
+                      onClick={() =>
+                        handleClickBtn(
+                          item.id,
+                          item.image_product,
+                          item.name_product,
+                          item.price
+                        )
+                      }
+                      className={cx("btn__add-cart")}
+                      text="Thêm vào giỏ hàng"
+                    />
+                  </div>
+                );
+              }
+              return null;
+            })}
         </div>
       </div>
       <ToastContainer

@@ -11,6 +11,7 @@ import {
   reduceQuantity,
   updateQuantity,
 } from "../../../redux/features/cart/cartSlice";
+import { addItemOrder } from "../../../redux/features/order/orderSlice";
 import {
   GetCartAPI,
   AddOrderAPI,
@@ -57,10 +58,19 @@ const Cart = () => {
   let handleOrderBtn = async () => {
     if (fullName && numberPhone && address) {
       const listProductInCart = [];
+      const listProductInCartRedux = [];
+
       for (let product of listItemCart) {
         listProductInCart.push({
           product_id: product.product_id,
           quantity: product.quantity,
+        });
+        listProductInCartRedux.push({
+          name_product: product.name_product,
+          price: product.price,
+          image_product: product.image_product,
+          quantity: product.quantity,
+          totalPayment: product.total_payment,
         });
       }
 
@@ -86,6 +96,19 @@ const Cart = () => {
           const resDeleteCart = await DeleteCartAPI();
           if (resDeleteCart && resDeleteCart.status === 200) {
             toast.success("Đơn hàng của bạn đã được xác nhận");
+            const orderDetail = {
+              id: order_id,
+              product: listProductInCartRedux,
+              full_name: fullName,
+              phone_number: numberPhone,
+              delivery_address: address,
+              total_payment: totalPrice,
+              order_date: null,
+              payment_methods: payment_method,
+              order_status: order_status,
+            };
+
+            dispatch(addItemOrder(orderDetail));
           }
         }
       }
@@ -114,27 +137,31 @@ const Cart = () => {
   const { totalPrice, totalPayment } = calculateTotalPrice();
 
   useEffect(() => {
-    const storedPhone = localStorage.getItem("username");
+    const storedPhone = localStorage.getItem("phone_number");
     const parsedPhone = JSON.parse(storedPhone);
-    setFullName(parsedPhone);
+    setNumberPhone(parsedPhone);
 
     const fetchAPI = async () => {
-      const res = await GetCartAPI();
+      try {
+        const res = await GetCartAPI();
 
-      if (res && res.status === 200 && res.data) {
-        const data = res.data.data;
-        data.forEach((item) => {
-          dispatch(
-            addItem({
-              id: item.cart_id,
-              product_id: item.product_id,
-              image_product: item.image_product,
-              name_product: item.name_product,
-              price: item.price,
-              quantity: item.quantity,
-            })
-          );
-        });
+        if (res && res.status === 200 && res.data) {
+          const data = res.data.data;
+          data.forEach((item) => {
+            dispatch(
+              addItem({
+                id: item.cart_id,
+                product_id: item.product_id,
+                image_product: item.image_product,
+                name_product: item.name_product,
+                price: item.price,
+                quantity: item.quantity,
+              })
+            );
+          });
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
 

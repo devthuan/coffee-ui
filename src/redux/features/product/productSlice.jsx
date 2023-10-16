@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  dataCake: [],
   data: [
     // {
     //   id: 1,
@@ -22,6 +23,9 @@ export const productSlice = createSlice({
     addProduct: (state, action) => {
       state.data.push(action.payload);
     },
+    addProductCake: (state, action) => {
+      state.dataCake.push(action.payload);
+    },
     removeProduct: (state, action) => {
       state.data = state.data.filter((item) => item.id !== action.payload);
     },
@@ -29,6 +33,7 @@ export const productSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addProduct, removeProduct } = productSlice.actions;
+export const { addProduct, addProductCake, removeProduct } =
+  productSlice.actions;
 
 export default productSlice.reducer;

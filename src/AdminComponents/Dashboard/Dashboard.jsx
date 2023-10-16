@@ -11,16 +11,19 @@ import Title from "../../components/Title/Title";
 import PieChart from "../../components/Chart/PieChart";
 import LineChart from "../../components/Chart/LineChart";
 import { useEffect, useMemo } from "react";
-import { GetUser } from "../../services/UseServices";
+import { GetUser, GetOrdersAPI } from "../../services/UseServices";
 import { useSelector, useDispatch } from "react-redux";
 import { addTotalData } from "../../redux/features/user/userSlice";
+import { addTotalDataOrder } from "../../redux/features/order/orderStatisticSlice";
 
 const cx = classNames.bind(styles);
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const totalUser = useSelector((state) => state.user.totalData);
-  const memoizedUserData = useMemo(() => totalUser, [totalUser]);
+  const totalOrder = useSelector((state) => state.orderStatistic.totalData);
+  const memoizedUserDataUser = useMemo(() => totalUser, [totalUser]);
+  const memoizedUserDataOrder = useMemo(() => totalOrder, [totalOrder]);
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -34,10 +37,28 @@ const Dashboard = () => {
         console.error("Có lỗi xảy ra:", error);
       }
     };
-    if (memoizedUserData === 0) {
+    if (memoizedUserDataUser === 0) {
       fetchAPI();
     }
-  }, [dispatch, memoizedUserData]);
+  }, [dispatch, memoizedUserDataUser]);
+
+  useEffect(() => {
+    const fetchAPI = async () => {
+      try {
+        const orders = await GetOrdersAPI();
+
+        if (orders && orders.status === 200) {
+          const data = orders.data.total;
+          dispatch(addTotalDataOrder(data));
+        }
+      } catch (error) {
+        console.error("Có lỗi xảy ra:", error);
+      }
+    };
+    if (memoizedUserDataOrder === 0) {
+      fetchAPI();
+    }
+  }, [dispatch, memoizedUserDataOrder]);
 
   return (
     <div className={cx("wrapper")}>
@@ -67,7 +88,7 @@ const Dashboard = () => {
             </div>
             <div className={cx("box__text")}>
               <Title className={cx("title")} text="tổng đơn hàng" />
-              <p className={cx("number")}>12</p>
+              <p className={cx("number")}>{totalOrder}</p>
             </div>
           </div>
         </div>
@@ -75,7 +96,9 @@ const Dashboard = () => {
           <LineChart />
         </div>
         <div className={cx("box__chart")}>
-          <div className={cx("chart__item")}>{/* <PieChart /> */}</div>
+          <div className={cx("chart__item")}>
+            <PieChart />
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  totalData: 0,
   data: [
     // {
     //   id: 1,
@@ -30,6 +31,9 @@ export const orderStatisticSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
+    addTotalDataOrder: (state, action) => {
+      state.totalData = action.payload;
+    },
     addOrderStatistic: (state, action) => {
       state.data.push(action.payload);
     },
@@ -40,7 +44,7 @@ export const orderStatisticSlice = createSlice({
       const { orderId, newStatus } = action.payload;
 
       state.data = state.data.map((item) =>
-        item.id === orderId ? { ...item, status: newStatus } : item
+        item.id === orderId ? { ...item, order_status: newStatus } : item
       );
 
       const orderToUpdate = state.data.find((item) => item.id === orderId);
@@ -53,6 +57,7 @@ export const orderStatisticSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  addTotalDataOrder,
   addOrderStatistic,
   removeOrderStatistic,
   setStatusOrderStatistic,

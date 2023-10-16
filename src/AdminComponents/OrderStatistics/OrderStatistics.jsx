@@ -179,12 +179,11 @@ const OrderStatistics = () => {
                       </td>
                       <td className={cx("item")}>
                         <Button
-                          className={cx(
-                            "btn",
-                            item.order_status === "Successful"
-                              ? "successful"
-                              : "failed"
-                          )}
+                          className={cx("btn", {
+                            successful: item.order_status === "Successful",
+                            failed: item.order_status === "Failed",
+                            pending: item.order_status === "Processing",
+                          })}
                           text={item.order_status}
                         />
                       </td>

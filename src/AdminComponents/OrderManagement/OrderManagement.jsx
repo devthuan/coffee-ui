@@ -10,11 +10,13 @@ import {
   removeItemOrder,
   addItemOrder,
 } from "../../redux/features/order/orderSlice";
+import { ToastContainer, toast } from "react-toastify";
 
 import { setStatusOrderStatistic } from "../../redux/features/order/orderStatisticSlice";
 import {
-  GetOrdersByUserIdAPI,
+  GetOrdersAPI,
   GetOrdersDetailAPI,
+  UpdateStatusOrder,
 } from "../../services/UseServices";
 
 const cx = classNames.bind(styles);
@@ -22,6 +24,9 @@ const cx = classNames.bind(styles);
 const OrderManagement = () => {
   const dispatch = useDispatch();
   const dataBill = useSelector((state) => state.order.data);
+  const dataOrderProcessing = dataBill.filter(
+    (order) => order.order_status === "Processing"
+  );
   const menoizedDataOrder = useMemo(() => dataBill, [dataBill]);
 
   // calculate data pagination
@@ -30,9 +35,21 @@ const OrderManagement = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = dataBill.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = dataOrderProcessing.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
-  const handleClickAccept = (id) => {
+  const handleClickAccept = async (id) => {
+    try {
+      const res = await UpdateStatusOrder(id, "Successful");
+      if (res && res.status === 200) {
+        toast.success("Đã xác nhận đơn hàng thành công.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
     dispatch(
       setStatusOrderStatistic({
         orderId: id,
@@ -42,7 +59,15 @@ const OrderManagement = () => {
     dispatch(removeItemOrder(id));
   };
 
-  const handleClickCancel = (id) => {
+  const handleClickCancel = async (id) => {
+    try {
+      const res = await UpdateStatusOrder(id, "Failed");
+      if (res && res.status === 200) {
+        toast.success("Đã huỷ đơn hàng thành công.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
     dispatch(
       setStatusOrderStatistic({
         orderId: id,
@@ -59,7 +84,7 @@ const OrderManagement = () => {
   useEffect(() => {
     const fetchAPI = async () => {
       try {
-        const res = await GetOrdersByUserIdAPI();
+        const res = await GetOrdersAPI();
         if (res && res.status === 200 && res.data) {
           const dataRes = res.data.data;
 
@@ -97,110 +122,117 @@ const OrderManagement = () => {
         <Title className={cx("title")} text="Bill management" />
         <div className={cx("group__bill")}>
           {currentItems.map((product, index) => {
-            if (product.order_status === "Processing") {
-              return (
-                <div key={index} className={cx("box__bill")}>
-                  <div className={cx("id__bill")}>Hoá Đơn {product.id}</div>
-                  <div className={cx("item__product")}>
-                    {product.product.map((item, index2) => {
-                      return (
-                        <div key={index2} className={cx("box__product")}>
-                          <div className={cx("box__img")}>
-                            <img
-                              className={cx("image__product")}
-                              width={35}
-                              height={73}
-                              src={item.image_product}
-                              alt=""
-                            />
-                          </div>
-                          <div className={cx("box__info__product")}>
-                            <p className={cx("name__product")}>
-                              {item.name_product}
-                            </p>
-                            <p className={cx("option__product")}>
-                              {item.classify}
-                            </p>
-                            <p className={cx("quantity__product")}>
-                              X {item.quantity}
-                            </p>
-                            <p className={cx("price__product")}>
-                              {parseInt(item.price).toLocaleString()} VNĐ
-                            </p>
-                          </div>
+            return (
+              <div key={index} className={cx("box__bill")}>
+                <div className={cx("id__bill")}>Hoá Đơn {product.id}</div>
+                <div className={cx("item__product")}>
+                  {product.product.map((item, index2) => {
+                    return (
+                      <div key={index2} className={cx("box__product")}>
+                        <div className={cx("box__img")}>
+                          <img
+                            className={cx("image__product")}
+                            width={35}
+                            height={73}
+                            src={item.image_product}
+                            alt=""
+                          />
                         </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className={cx("box__information")}>
-                    <h2 className={cx("title__infor")}>Thông tin</h2>
-                    <ul className={cx("list__infor")}>
-                      <li className={cx("item")}>
-                        <p className={cx("item__title")}> tên </p>
-                        <p className={cx("value")}>: {product.full_name}</p>
-                      </li>
-                      <li className={cx("item")}>
-                        <p className={cx("item__title")}> Số điện thoại </p>
-                        <p className={cx("value")}>: {product.phone_number}</p>
-                      </li>
-                      <li className={cx("item")}>
-                        <p className={cx("item__title")}>Địa chỉ </p>
-                        <p className={cx("value")}>
-                          : {product.delivery_address}
-                        </p>
-                      </li>
-                      <li className={cx("item")}>
-                        <p className={cx("item__title")}>Thời gian </p>
-                        <p className={cx("value")}>
-                          :{" "}
-                          {isValid(new Date(product.order_date))
-                            ? format(
-                                new Date(product.order_date),
-                                "hh:mm, dd/MM/yyyy"
-                              )
-                            : ""}
-                        </p>
-                      </li>
-                      <li className={cx("item")}>
-                        <p className={cx("item__title")}>Phương Thức </p>
-                        <p className={cx("value")}>
-                          : {product.payment_methods}
-                        </p>
-                      </li>
-                      <li className={cx("item")}>
-                        <p className={cx("item__title")}>Trạng thái </p>
-                        <p className={cx("value", "wait")}>
-                          : {product.order_status}
-                        </p>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className={cx("box__btn")}>
-                    <Button
-                      onClick={() => handleClickAccept(product.id)}
-                      className={cx("btn", "accept")}
-                      text="Chấp Nhận"
-                    />
-                    <Button
-                      onClick={() => handleClickCancel(product.id)}
-                      className={cx("btn", "cancel")}
-                      text="Huỷ"
-                    />
-                  </div>
+                        <div className={cx("box__info__product")}>
+                          <p className={cx("name__product")}>
+                            {item.name_product}
+                          </p>
+                          <p className={cx("option__product")}>
+                            {item.classify}
+                          </p>
+                          <p className={cx("quantity__product")}>
+                            X {item.quantity}
+                          </p>
+                          <p className={cx("price__product")}>
+                            {parseInt(item.price).toLocaleString()} VNĐ
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            }
-            return null;
+
+                <div className={cx("box__information")}>
+                  <h2 className={cx("title__infor")}>Thông tin</h2>
+                  <ul className={cx("list__infor")}>
+                    <li className={cx("item")}>
+                      <p className={cx("item__title")}> tên </p>
+                      <p className={cx("value")}>: {product.full_name}</p>
+                    </li>
+                    <li className={cx("item")}>
+                      <p className={cx("item__title")}> Số điện thoại </p>
+                      <p className={cx("value")}>: {product.phone_number}</p>
+                    </li>
+                    <li className={cx("item")}>
+                      <p className={cx("item__title")}>Địa chỉ </p>
+                      <p className={cx("value")}>
+                        : {product.delivery_address}
+                      </p>
+                    </li>
+                    <li className={cx("item")}>
+                      <p className={cx("item__title")}>Thời gian </p>
+                      <p className={cx("value")}>
+                        :{" "}
+                        {isValid(new Date(product.order_date))
+                          ? format(
+                              new Date(product.order_date),
+                              "hh:mm, dd/MM/yyyy"
+                            )
+                          : ""}
+                      </p>
+                    </li>
+                    <li className={cx("item")}>
+                      <p className={cx("item__title")}>Phương Thức </p>
+                      <p className={cx("value")}>: {product.payment_methods}</p>
+                    </li>
+                    <li className={cx("item")}>
+                      <p className={cx("item__title")}>Trạng thái </p>
+                      <p className={cx("value", "wait")}>
+                        : {product.order_status}
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className={cx("box__btn")}>
+                  <Button
+                    onClick={() => handleClickAccept(product.id)}
+                    className={cx("btn", "accept")}
+                    text="Chấp Nhận"
+                  />
+                  <Button
+                    onClick={() => handleClickCancel(product.id)}
+                    className={cx("btn", "cancel")}
+                    text="Huỷ"
+                  />
+                </div>
+              </div>
+            );
           })}
         </div>
       </div>
       <Pagination
         currentPage={currentPage}
         itemsPerPage={itemsPerPage}
-        totalItems={dataBill.length}
+        totalItems={dataOrderProcessing.length}
         onPageChange={handlePageChange}
+      />
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
       />
     </div>
   );

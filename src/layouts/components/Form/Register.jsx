@@ -7,7 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Fragment, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { RegisterAPI } from "../../../services/UseServices";
-
+import { validateRegisterData } from "../../../validations/validations";
 const cx = classNames.bind(styles);
 
 const Register = () => {
@@ -34,6 +34,13 @@ const Register = () => {
       const phone_number = inputValues[1];
       const password = inputValues[2];
       if (full_name && phone_number && password) {
+        let validationErrors = validateRegisterData(password, phone_number);
+        if (validationErrors) {
+          console.log(validationErrors);
+          validationErrors.forEach((item) => {
+            toast.error(item);
+          });
+        }
         const res = await RegisterAPI(full_name, phone_number, password);
         if (res && res.status === 400 && res.data) {
           toast.error(res.data.error);

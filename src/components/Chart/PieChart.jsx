@@ -20,7 +20,7 @@ const PieChart = () => {
   return (
     <div className={cx("box__chart")}>
       <Title className={cx("title__chart")} text="Thống kê đơn hàng" />
-      <Pie data={data} />
+      {/* <Pie data={data} /> */}
     </div>
   );
 };

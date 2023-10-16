@@ -5,10 +5,11 @@ import classNames from "classnames/bind";
 import styles from "./MenuWater.module.scss";
 import Button from "../../../components/Button/Button";
 import HearIcon from "../../../assets/images/icon-hear.svg";
-import { addProduct } from "../../../redux/features/product/productSlice";
+import { addProductCake } from "../../../redux/features/product/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCartAPI } from "../../../services/UseServices";
 import { GetProductAPI } from "../../../services/UseServices";
+import { addItem } from "../../../redux/features/cart/cartSlice";
 
 const cx = classNames.bind(styles);
 
@@ -18,39 +19,58 @@ const MenuWater = () => {
   const memoizedProductData = useMemo(() => dataProducts, [dataProducts]);
   const [activeTabs, setActiveTabs] = useState("cà phê");
 
-  let handleClickBtn = async (product_id, image, name, price) => {
+  let handleClickBtn = async (
+    product_id,
+    image_product,
+    name_product,
+    price
+  ) => {
     try {
       let quantity = 1;
       const res = await AddCartAPI(product_id, quantity);
 
       if (res && res.status === 200) {
         toast.success("Thêm sản phẩm thành công");
+        dispatch(
+          addItem({
+            product_id,
+            name_product,
+            image_product,
+            price,
+            quantity,
+          })
+        );
       } else {
         toast.error("Có lỗi xảy ra!!!");
       }
     } catch (error) {
-      console.log(error);
+      toast.warning("Bạn cần đăng nhập trước khi đặt hàng");
+      return;
     }
   };
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const res = await GetProductAPI(1);
+      try {
+        const res = await GetProductAPI(1);
 
-      if (res && res.status === 200 && res.data) {
-        const data = res.data.data;
-        data.forEach((item) =>
-          dispatch(
-            addProduct({
-              id: item.id,
-              name_product: item.name_product,
-              price: item.price,
-              image_product: item.image_product,
-              category: item.category,
-              is_active: item.is_active,
-            })
-          )
-        );
+        if (res && res.status === 200 && res.data) {
+          const data = res.data.data;
+          data.forEach((item) =>
+            dispatch(
+              addProductCake({
+                id: item.id,
+                name_product: item.name_product,
+                price: item.price,
+                image_product: item.image_product,
+                category: item.category,
+                is_active: item.is_active,
+              })
+            )
+          );
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
 
@@ -100,7 +120,7 @@ const MenuWater = () => {
                     </div>
                     <p className={cx("name")}>{item.name_product}</p>
                     <p className={cx("price")}>
-                      {item.price.toLocaleString()} VND
+                      {parseInt(item.price).toLocaleString()} VND
                     </p>
                     <img className={cx("item__icon")} src={HearIcon} alt="" />
                     <Button

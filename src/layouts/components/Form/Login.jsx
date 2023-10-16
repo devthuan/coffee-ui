@@ -10,10 +10,13 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import { setItemWithExpiration } from "../../../services/LocalStorage";
 import axios from "axios";
+import { addToken } from "../../../redux/features/login/tokenSlice";
+import { useDispatch } from "react-redux";
 
 const cx = classNames.bind(styles);
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const GroupInput = [
     {
@@ -56,8 +59,10 @@ const Login = () => {
         console.log(res);
 
         if (res && res.data && res.data.token) {
-          setItemWithExpiration("token", res.data.token.accessToken, 100000);
+          const token = res.data.token.accessToken;
+          setItemWithExpiration("token", token, 1);
           localStorage.setItem("phone_number", JSON.stringify(inputValues[0]));
+          dispatch(addToken(token));
           setTimeout(() => {
             navigate("/");
           }, 800);

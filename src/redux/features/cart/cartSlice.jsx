@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UpdateQuantityCart } from "../../../services/UseServices";
+import {
+  UpdateQuantityCart,
+  DeleteItemCartAPI,
+} from "../../../services/UseServices";
 
 const initialState = {
   totalData: 0,
@@ -36,6 +39,15 @@ export const cartSlice = createSlice({
       }
     },
     removeItem: (state, action) => {
+      async function removeItemInCart() {
+        try {
+          const res = await DeleteItemCartAPI(action.payload);
+          console.log(res);
+        } catch (error) {
+          console.error("Lỗi khi cập nhật số lượng trong giỏ hàng:", error);
+        }
+      }
+      removeItemInCart();
       state.data = state.data.filter((item) => item.id !== action.payload);
     },
     removeAll: (state, action) => {

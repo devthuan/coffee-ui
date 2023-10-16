@@ -147,3 +147,28 @@
     margin-left: 20px;
 }
 
+
+.successful {
+    color: var(--color-white);
+    background-color: var(--color-green);
+}
+
+.pending {
+    color: var(--color-white);
+    background-color: var(--color-origin);
+}
+
+.failed {
+    color: var(--color-white);
+    background-color: var(--color-red);
+}
+
+.cancel {
+
+    &:hover {
+        color: var(--color-white);
+        background-color: var(--color-red);
+        transition: 0.5s all;
+    }
+
+}

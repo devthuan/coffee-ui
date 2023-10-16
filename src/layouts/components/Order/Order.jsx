@@ -10,15 +10,26 @@ import { useEffect, useMemo } from "react";
 import {
   GetOrdersByUserIdAPI,
   GetOrdersDetailAPI,
+  UpdateStatusOrder,
 } from "../../../services/UseServices";
+import { ToastContainer, toast } from "react-toastify";
 
 const cx = classNames.bind(stylesOrder);
 
 const Order = () => {
   const dispatch = useDispatch();
   const dataOrders = useSelector((state) => state.order.data);
+
   const menoizedDataOrder = useMemo(() => dataOrders, [dataOrders]);
-  let handleDelete = (itemId) => {
+  let handleDelete = async (itemId) => {
+    try {
+      const res = await UpdateStatusOrder(itemId, "Failed");
+      if (res && res.status === 200) {
+        toast.success("Đã huỷ đơn hàng thành công.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
     dispatch(
       setStatusOrderStatistic({
         orderId: itemId,
@@ -109,7 +120,7 @@ const Order = () => {
                                   </div>
                                 </div>
                                 <p className={cx("price__product")}>
-                                  {item.price}
+                                  {parseInt(item.price).toLocaleString()}
                                 </p>
                               </div>
                             </div>
@@ -135,18 +146,26 @@ const Order = () => {
                       <td className={cx("table__item")}>
                         <div className={cx("table__btn")}>
                           <Button
-                            className={cx("btn")}
+                            className={cx("btn", {
+                              successful: order.order_status === "Successful",
+                              failed: order.order_status === "Failed",
+                              pending: order.order_status === "Processing",
+                            })}
                             text={order.order_status}
                           />
                         </div>
                       </td>
                       <td className={cx("table__item")}>
                         <div className={cx("table__btn")}>
-                          <Button
-                            onClick={() => handleDelete(order.id)}
-                            className={cx("btn")}
-                            text="Huỷ"
-                          />
+                          {order.order_status === "Processing" ? (
+                            <Button
+                              onClick={() => handleDelete(order.id)}
+                              className={cx("btn", "cancel")}
+                              text="Huỷ"
+                            />
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -162,6 +181,18 @@ const Order = () => {
           />
         )}
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

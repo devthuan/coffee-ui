@@ -4,20 +4,17 @@ import IconSearch from "../../../assets/images/icon-search.png";
 import Logo from "../../../assets/images/logo.png";
 import Cart from "../../../assets/images/gio-hang.png";
 import Avatar from "../../../assets/images/avatar-crycle.jpg";
-import { useState, useEffect, useMemo } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
-import { GetCartAPI } from "../../../services/UseServices";
-import { addTotalData } from "../../../redux/features/cart/cartSlice";
+
 const cx = classNames.bind(styles);
 
 const Menu = () => {
-  const dispatch = useDispatch();
   const location = useLocation();
-  const navigate = useNavigate();
-  const cartData = useSelector((state) => state.cart.totalData);
+  const cartData = useSelector((state) => state.cart.data).length || 0;
   const [isHovered, setIsHovered] = useState(false);
   const checkLogin = localStorage.getItem("token");
   const handleMouseEnter = () => {
@@ -29,33 +26,10 @@ const Menu = () => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("username");
+    localStorage.removeItem("phone_number");
     localStorage.removeItem("token");
-    navigate("/");
+    window.location.href = "/"; // Replace "/login" with the actual URL
   };
-
-  // Sử dụng useMemo để lưu trạng thái dữ liệu đã được tải
-  const memoizedCartData = useMemo(() => cartData, [cartData]);
-
-  useEffect(() => {
-    const fetchAPI = async () => {
-      try {
-        const res = await GetCartAPI();
-
-        if (res && res.status === 200 && res.data) {
-          const data = res.data.totalCart;
-          dispatch(addTotalData(data));
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    // Kiểm tra xem dữ liệu đã được tải chưa trước khi gọi API
-    if (memoizedCartData === 0) {
-      fetchAPI();
-    }
-  }, [dispatch, memoizedCartData]);
 
   return (
     <div className={cx("header")}>
