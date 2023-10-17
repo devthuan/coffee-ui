@@ -6,8 +6,9 @@ import { faCheck, faSpinner, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { format, isValid } from "date-fns";
 import Title from "../../components/Title/Title";
 import Button from "../../components/Button/Button";
+import Pagination from "../../components/Pagination/Pagination";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GetOrdersAPI, GetOrdersDetailAPI } from "../../services/UseServices";
 import { addOrderStatistic } from "../../redux/features/order/orderStatisticSlice";
 const cx = classNames.bind(styles);
@@ -16,7 +17,27 @@ const cxDashboard = classNames.bind(styleDashboard);
 const OrderStatistics = () => {
   const dispatch = useDispatch();
   const dataOrder = useSelector((state) => state.orderStatistic.data);
+  const dataOrderSuccessful =
+    dataOrder.filter((order) => order.order_status === "Successful").length ||
+    0;
+  const dataOrderFailed =
+    dataOrder.filter((order) => order.order_status === "Failed").length || 0;
+  const dataOrderProcessing =
+    dataOrder.filter((order) => order.order_status === "Processing").length ||
+    0;
   const memoizedOrderData = useMemo(() => dataOrder, [dataOrder]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = dataOrder.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   useEffect(() => {
     const fetchAPI = async () => {
       try {
@@ -71,7 +92,7 @@ const OrderStatistics = () => {
                 className={cxDashboard("title")}
                 text="Đơn hàng thành công"
               />
-              <p className={cxDashboard("number")}>12</p>
+              <p className={cxDashboard("number")}>{dataOrderSuccessful}</p>
             </div>
           </div>
           <div className={cxDashboard("box__item")}>
@@ -86,7 +107,7 @@ const OrderStatistics = () => {
                 className={cxDashboard("title")}
                 text="Đơn hàng đang chờ"
               />
-              <p className={cxDashboard("number")}>12</p>
+              <p className={cxDashboard("number")}>{dataOrderProcessing}</p>
             </div>
           </div>
           <div className={cxDashboard("box__item")}>
@@ -98,13 +119,13 @@ const OrderStatistics = () => {
             </div>
             <div className={cxDashboard("box__text")}>
               <Title className={cxDashboard("title")} text="Đơn hàng bị huỷ" />
-              <p className={cxDashboard("number")}>12</p>
+              <p className={cxDashboard("number")}>{dataOrderFailed}</p>
             </div>
           </div>
         </div>
 
         <div className={cx("box__table")}>
-          {dataOrder && dataOrder.length > 0 ? (
+          {currentItems && currentItems.length > 0 ? (
             <table className={cx("table")}>
               <tbody>
                 <tr className={cx("group__title")}>
@@ -116,7 +137,7 @@ const OrderStatistics = () => {
 
                   <th className={cx("title__text")}>Ngày tạo</th>
                 </tr>
-                {dataOrder.map((item, index) => {
+                {currentItems.map((item, index) => {
                   return (
                     <tr key={index} className={cx("group__row")}>
                       <td className={cx("item")}>{item.id}</td>
@@ -207,6 +228,12 @@ const OrderStatistics = () => {
             />
           )}
         </div>
+        <Pagination
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          totalItems={dataOrder.length}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );

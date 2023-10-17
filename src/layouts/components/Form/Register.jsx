@@ -36,7 +36,6 @@ const Register = () => {
       if (full_name && phone_number && password) {
         let validationErrors = validateRegisterData(password, phone_number);
         if (validationErrors) {
-          console.log(validationErrors);
           validationErrors.forEach((item) => {
             toast.error(item);
           });

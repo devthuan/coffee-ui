@@ -4,8 +4,8 @@ export const GetUser = (page) => {
   return api.get(`user?page=${page}`);
 };
 
-export const GetOrdersAPI = () => {
-  return api.get(`order-all`);
+export const GetOrdersAPI = (page) => {
+  return api.get(`order-all?=${page}`);
 };
 
 export const GetOrdersByUserIdAPI = () => {

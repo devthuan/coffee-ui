@@ -56,11 +56,11 @@ const Login = () => {
           phone_number,
           password,
         });
-        console.log(res);
 
         if (res && res.data && res.data.token) {
           const token = res.data.token.accessToken;
-          setItemWithExpiration("token", token, 1);
+          const permission = res.data.permission;
+          setItemWithExpiration("token", [token, permission], 1);
           localStorage.setItem("phone_number", JSON.stringify(inputValues[0]));
           dispatch(addToken(token));
           setTimeout(() => {
