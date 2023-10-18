@@ -4,6 +4,10 @@ export const GetUser = (page) => {
   return api.get(`user?page=${page}`);
 };
 
+export const SearchUser = (value) => {
+  return api.get(`search?key=${value}`);
+};
+
 export const GetOrdersAPI = (page) => {
   return api.get(`order-all?=${page}`);
 };

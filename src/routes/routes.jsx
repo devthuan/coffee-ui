@@ -48,7 +48,9 @@ const publicRoutes = [
 const privateRoutes = [
   { path: config.routes.cart, component: Cart, layout: CartLayout },
   { path: config.routes.order, component: Order, layout: CartLayout },
+];
 
+const adminRoutes = [
   {
     path: config.routes.dashboard,
     component: Dashboard,
@@ -71,4 +73,4 @@ const privateRoutes = [
   },
 ];
 
-export { publicRoutes, privateRoutes };
+export { publicRoutes, privateRoutes, adminRoutes };

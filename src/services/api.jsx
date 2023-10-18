@@ -7,7 +7,8 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    const token = await getItemWithExpiration("token"); // Truy cập token từ Redux store
+    const tokenAndPermision = await getItemWithExpiration("token"); // Truy cập token từ Redux store
+    const token = tokenAndPermision[0];
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

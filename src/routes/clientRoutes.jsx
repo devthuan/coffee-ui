@@ -1,19 +1,23 @@
-import { Route, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getTokenFromLocalStorage } from "../validations/validations";
 
-const ClientRoute = ({ children, authCheck, redirectPath = "/login" }) => {
-  const navigate = useNavigate();
+const ClientRoutes = (props) => {
+  const dispatch = useDispatch();
+  const dataToken = useSelector((state) => state.token.data);
+  const token = localStorage.getItem("token") || dataToken;
 
-  const checkAuth = () => {
-    if (authCheck) {
-      return children;
-    } else {
-      alert("you need login");
-      navigate(redirectPath);
-      return null;
-    }
-  };
+  useEffect(() => {
+    dispatch(getTokenFromLocalStorage());
+  }, [dispatch]);
 
-  return <Route path="" element={checkAuth()} />;
+  if (token.length === 0) {
+    alert("You need Login !");
+    return <Navigate to="/" />;
+  } else {
+    return <>{props.children}</>;
+  }
 };
 
-export default ClientRoute;
+export default ClientRoutes;
