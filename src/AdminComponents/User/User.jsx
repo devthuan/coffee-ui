@@ -40,6 +40,16 @@ const User = () => {
       }
     } catch (error) {}
   };
+  const handleUnlockAccount = async (userId) => {
+    try {
+      let newStatus = 1;
+      const res = await UpdateStatusAccount(userId, newStatus);
+      if (res && res.status === 200) {
+        dispatch(setStatusUser({ userId, newStatus }));
+        toast.success("Đã mở khóa tài khoản thành công.");
+      }
+    } catch (error) {}
+  };
 
   const handleSearchUser = async (event) => {
     let value = event.target.value;
@@ -155,16 +165,26 @@ const User = () => {
                           </td>
 
                           <td className={cx("item")}>
-                            <Button
-                              className={cx("btn", "update")}
-                              onClick={() => handleBlockAccount(user.id)}
-                              text="khoá"
-                            />
-                            <Button
-                              onClick={() => handleClickDelete(user.id)}
-                              className={cx("btn", "delete")}
-                              text="xoá"
-                            />
+                            <div className={cx("box_btn")}>
+                              {user.is_active === 1 ? (
+                                <Button
+                                  className={cx("btn", "delete")}
+                                  onClick={() => handleBlockAccount(user.id)}
+                                  text="khoá"
+                                />
+                              ) : (
+                                <Button
+                                  className={cx("btn", "update")}
+                                  onClick={() => handleUnlockAccount(user.id)}
+                                  text="unlock"
+                                />
+                              )}
+                              <Button
+                                onClick={() => handleClickDelete(user.id)}
+                                className={cx("btn", "delete")}
+                                text="xoá"
+                              />
+                            </div>
                           </td>
                         </tr>
                       );
