@@ -38,16 +38,14 @@ export const userSlice = createSlice({
       state.data = state.data.filter((item) => item.id !== action.payload);
     },
     setStatusUser: (state, action) => {
-      const { orderId, newStatus } = action.payload;
-      console.log(orderId, newStatus);
+      const { userId, newStatus } = action.payload;
 
-      state.data = state.data.map((item) =>
-        item.id === orderId ? { ...item, status: newStatus } : item
-      );
+      // Tìm index của người dùng có userId trong mảng data
+      const userIndex = state.data.findIndex((user) => user.id === userId);
 
-      const orderToUpdate = state.data.find((item) => item.id === orderId);
-      if (orderToUpdate) {
-        orderToUpdate.status = newStatus;
+      if (userIndex !== -1) {
+        // Tìm thấy người dùng
+        state.data[userIndex].is_active = newStatus;
       }
     },
 

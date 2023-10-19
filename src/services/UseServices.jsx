@@ -3,6 +3,9 @@ import api from "./api";
 export const GetUser = (page) => {
   return api.get(`user?page=${page}`);
 };
+export const UpdateStatusAccount = (user_id, new_status) => {
+  return api.patch(`status`, { user_id, new_status });
+};
 
 export const SearchUser = (value) => {
   return api.get(`search?key=${value}`);

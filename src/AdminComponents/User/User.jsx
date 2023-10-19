@@ -1,13 +1,22 @@
 import classNames from "classnames/bind";
 import styles from "./User.module.scss";
 import { format, isValid } from "date-fns";
+import { ToastContainer, toast } from "react-toastify";
 import Title from "../../components/Title/Title";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { removeUser, addUser } from "../../redux/features/user/userSlice";
+import {
+  removeUser,
+  addUser,
+  setStatusUser,
+} from "../../redux/features/user/userSlice";
 import { useEffect, useMemo, useState } from "react";
-import { GetUser, SearchUser } from "../../services/UseServices";
+import {
+  GetUser,
+  SearchUser,
+  UpdateStatusAccount,
+} from "../../services/UseServices";
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +28,17 @@ const User = () => {
 
   const handleClickDelete = (id) => {
     dispatch(removeUser(id));
+  };
+
+  const handleBlockAccount = async (userId) => {
+    try {
+      let newStatus = 0;
+      const res = await UpdateStatusAccount(userId, newStatus);
+      if (res && res.status === 200) {
+        dispatch(setStatusUser({ userId, newStatus }));
+        toast.success("Đã khóa tài khoản thành công.");
+      }
+    } catch (error) {}
   };
 
   const handleSearchUser = async (event) => {
@@ -137,7 +157,8 @@ const User = () => {
                           <td className={cx("item")}>
                             <Button
                               className={cx("btn", "update")}
-                              text="sửa"
+                              onClick={() => handleBlockAccount(user.id)}
+                              text="khoá"
                             />
                             <Button
                               onClick={() => handleClickDelete(user.id)}
@@ -158,6 +179,18 @@ const User = () => {
           )}
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={1200}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 };
